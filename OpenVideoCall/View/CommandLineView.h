@@ -31,5 +31,7 @@ class CommandLineView : public MsgHandler{
 
         bool printDeviceInfo(); 
 
+        bool setCurCamera(const string& cameraId); 
+
         bool exit(); 
 };

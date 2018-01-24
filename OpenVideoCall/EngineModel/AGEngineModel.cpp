@@ -3,11 +3,14 @@
 #include"AGCameraManager.h"
 #include"AGAudInputManager.h"
 #include"AGPlayoutManager.h"
+#include"AGEventDef.h"
 
 #include<iostream>
+#include<string>
 
 using std::cout;
 using std::endl;
+using std::string;
 using std::stringstream;
 
 AGEngineModel AGEngineModel::m_model;
@@ -26,6 +29,7 @@ AGEngineModel::AGEngineModel() {
     registerHandler(MSG_ENABLE_LOCAL_VIDEO, (handler_ptr)&AGEngineModel::onEnableLocalVideoMsg);
     registerHandler(MSG_ENABLE_LOCAL_AUDIO, (handler_ptr)&AGEngineModel::onEnableLocalAudioMsg);
     registerHandler(MSG_PRINT_DEVICE_INFO, (handler_ptr)&AGEngineModel::onPrintDeviceInfoMsg);
+    registerHandler(MSG_SET_CUR_CAMERA, (handler_ptr)&AGEngineModel::onSetCurCameraMsg);
     registerHandler(MSG_EXIT, (handler_ptr)&AGEngineModel::onExitMsg);
 
     m_engineEventHandler.setEventReceiver(this);
@@ -64,10 +68,6 @@ bool AGEngineModel::onOpenMsg(void* msg) {
 
     int ret = m_engine->joinChannel(m_cfg.channelId.c_str(), m_cfg.uid, m_cfg.channelProfile); 
 
-    m_cameraMgr->create(m_engine->getRtcEngine());
-    m_audInMgr->create(m_engine->getRtcEngine());
-    m_playoutMgr->create(m_engine->getRtcEngine());
-    
     return ret;
 }
 
@@ -147,8 +147,19 @@ bool AGEngineModel::onConfigureMsg(void* msg) {
 bool AGEngineModel::onPrintDeviceInfoMsg(void* msg) {
     cout << "model onPrintDeviceInfoMsg"<<endl;
 
-    cout <<"camera device number is:" << (uint32_t)m_cameraMgr->getDeviceCount() << endl;
-    //cout <<"current camera device id is:" << cameraId << endl;
+    int cameraCnt = m_cameraMgr->getDeviceCount();
+    cout <<"camera device number is:" << cameraCnt<< endl;
+    cout <<"camera device list:" << endl;
+    for(int i = 0; i < cameraCnt; ++i) {
+        string deviceId;
+        string deviceName;
+        if(m_cameraMgr->getDevice(i , deviceName, deviceId)) {
+            cout <<"device index: "<< i<<",  device name: "<< deviceName <<",  device Id: " << deviceId << endl;
+        }
+    }
+    string curDeviceId;
+    if(m_cameraMgr->getCurDeviceId(curDeviceId)) 
+        cout <<"current camera device id is:" << curDeviceId << endl;
 
     cout <<"audio input device number is:" << (uint32_t)m_audInMgr->getDeviceCount() << endl;
     //cout <<"current audio input device id is:" << auInputId << endl;
@@ -170,6 +181,14 @@ bool AGEngineModel::onExitMsg(void* msg) {
     release();
 
     return true;
+}
+
+bool AGEngineModel::onSetCurCameraMsg(void* msg) {
+    string* deviceId = reinterpret_cast<string*>(msg);
+    if(!m_cameraMgr)
+        return false;
+
+    return m_cameraMgr->setCurDevice(deviceId->c_str());
 }
 
 void AGEngineModel::release() {
@@ -196,5 +215,12 @@ void AGEngineModel::release() {
 
 
 void AGEngineModel::onEvent(int id, void* pData) {
+    switch(id) {
+        case EID_JOINCHANNEL_SUCCESS: 
+            m_cameraMgr->create(m_engine->getRtcEngine());
+            m_audInMgr->create(m_engine->getRtcEngine());
+            m_playoutMgr->create(m_engine->getRtcEngine());
+            break;
+    }
 }
 

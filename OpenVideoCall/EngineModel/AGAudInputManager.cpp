@@ -90,16 +90,18 @@ bool AGAudInputManager::getDevice(uint8_t index, string& deviceName, string& dev
     return true;
 }
 
-const char* AGAudInputManager::getCurDeviceId()
+bool AGAudInputManager::getCurDeviceId(string& id)
 {
-    char    deviceId[MAX_DEVICE_ID_LENGTH];
+    char deviceId[MAX_DEVICE_ID_LENGTH];
 
     if (m_deviceManager == NULL || m_deviceManager->get() == NULL)
-        return NULL;
+        return false;
 
     (*m_deviceManager)->getRecordingDevice(deviceId);
+    
+    id.assign(deviceId);
 
-    return deviceId;
+    return true;
 }
 
 bool AGAudInputManager::setCurDevice(const char* deviceId)

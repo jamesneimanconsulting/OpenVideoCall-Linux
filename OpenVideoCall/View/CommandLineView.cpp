@@ -95,6 +95,12 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
     else if(cmd.compare("print_device_info") == 0) {
         return printDeviceInfo();
     }  
+    else if(cmd.compare("set_cur_camera") == 0) {
+        string cameraId;
+        params >> cameraId;
+
+        return setCurCamera(cameraId);
+    }
     else {
         cout<< "WARNING:invalid command: " << cmd <<endl;
         return false;
@@ -148,6 +154,13 @@ bool CommandLineView::enableLocalAudio(int enable) {
         return false;
 
     return m_controller->sendMsg(this, MSG_ENABLE_LOCAL_AUDIO , (void*)&enable);
+}
+
+bool CommandLineView::setCurCamera(const string& cameraId) {
+    if(!m_controller)
+        return false;
+
+    return m_controller->sendMsg(this, MSG_SET_CUR_CAMERA , (void*)&cameraId);
 }
 
 bool CommandLineView::exit() {

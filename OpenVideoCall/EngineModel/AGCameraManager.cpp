@@ -44,17 +44,19 @@ uint8_t AGCameraManager::getDeviceCount() {
     return (uint8_t)m_collection->getCount();
 }
 
-const char* AGCameraManager::getCurDeviceId() {
+bool AGCameraManager::getCurDeviceId(string& id) {
     char deviceId[MAX_DEVICE_ID_LENGTH];
 
     if (m_deviceManager == NULL || m_deviceManager->get() == NULL)
-        return NULL;
+        return false;
 
     memset(deviceId, 0x00, MAX_DEVICE_ID_LENGTH);
     if (m_deviceManager != NULL && m_deviceManager->get() != NULL)
         (*m_deviceManager)->getDevice(deviceId);
 
-    return deviceId;
+    id.assign(deviceId);
+
+    return true;
 }
 
 bool AGCameraManager::getDevice(uint8_t index, string& deviceName, string& deviceId) {

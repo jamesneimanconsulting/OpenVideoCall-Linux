@@ -35,6 +35,7 @@ class AGEngineModel : public MsgHandler
         bool onEnableLocalAudioMsg(void* msg);
         bool onConfigureMsg(void* msg);
         bool onPrintDeviceInfoMsg(void* msg);
+        bool onSetCurCameraMsg(void* msg); 
         bool onExitMsg(void* msg); 
 
         void release(); 

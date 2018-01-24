@@ -89,16 +89,18 @@ bool AGPlayoutManager::getDevice(uint8_t index, string &deviceName, string &devi
     return true;
 }
 
-const char* AGPlayoutManager::getCurDeviceId()
+bool AGPlayoutManager::getCurDeviceId(string& id)
 {
-    char		deviceId[MAX_DEVICE_ID_LENGTH];
+    char deviceId[MAX_DEVICE_ID_LENGTH];
 
     if (m_deviceManager == NULL || m_deviceManager->get() == NULL)
-        return NULL;
+        return false;
 
     (*m_deviceManager)->getPlaybackDevice(deviceId);
 
-    return deviceId;
+    id.assign(deviceId);
+
+    return true;
 }
 
 bool AGPlayoutManager::setCurDevice(const char* deviceId)

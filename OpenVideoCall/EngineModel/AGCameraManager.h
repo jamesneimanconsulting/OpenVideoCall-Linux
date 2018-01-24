@@ -24,7 +24,7 @@ class AGCameraManager
 
         uint8_t getDeviceCount();
 
-        const char* getCurDeviceId();
+        bool getCurDeviceId(string& id);
         bool setCurDevice(const char* deviceId);
 
         bool getDevice(uint8_t index, string& deviceName, string& deviceId);
