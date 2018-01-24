@@ -81,7 +81,7 @@ bool AGEngineModel::onCloseMsg(void* msg) {
 }
 
 bool AGEngineModel::onEnableVideoMsg(void* msg) {
-    int enable = *(reinterpret_cast<int*>(msg));
+    bool enable = *(reinterpret_cast<bool*>(msg));
 
     if(enable != m_cfg.enableVideo) {
         m_cfg.enableVideo =  enable;
@@ -95,7 +95,7 @@ bool AGEngineModel::onEnableVideoMsg(void* msg) {
 }
 
 bool AGEngineModel::onEnableAudioMsg(void* msg) {
-    int enable = *(reinterpret_cast<int*>(msg));
+    bool enable = *(reinterpret_cast<bool*>(msg));
 
     if(enable != m_cfg.enableAudio) {
         m_cfg.enableAudio =  enable;
@@ -109,7 +109,7 @@ bool AGEngineModel::onEnableAudioMsg(void* msg) {
 }
 
 bool AGEngineModel::onEnableLocalVideoMsg(void* msg) {
-    int enable = *(reinterpret_cast<int*>(msg));
+    bool enable = *(reinterpret_cast<bool*>(msg));
 
     if(enable != m_cfg.enableLocalVideo) {
         m_cfg.enableLocalVideo =  enable;
@@ -123,7 +123,7 @@ bool AGEngineModel::onEnableLocalVideoMsg(void* msg) {
 }
 
 bool AGEngineModel::onEnableLocalAudioMsg(void* msg) {
-    int enable = *(reinterpret_cast<int*>(msg));
+    bool enable = *(reinterpret_cast<bool*>(msg));
 
     if(enable != m_cfg.enableLocalAudio) {
         m_cfg.enableLocalAudio =  enable;

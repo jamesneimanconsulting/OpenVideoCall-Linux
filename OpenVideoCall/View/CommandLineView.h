@@ -11,7 +11,7 @@ class CommandLineView : public MsgHandler{
         CommandLineView();
         ~CommandLineView();
 
-        void run();
+        void run(bool openVideoCall);
         void configure(const AppConfig& config);
 
     private:
@@ -21,13 +21,13 @@ class CommandLineView : public MsgHandler{
 
         bool close(); 
 
-        bool enableAudio(int enable); 
+        bool enableAudio(bool enable); 
 
-        bool enableVideo(int enable);
+        bool enableVideo(bool enable);
 
-        bool enableLocalAudio(int enable); 
+        bool enableLocalAudio(bool enable); 
 
-        bool enableLocalVideo(int enable);
+        bool enableLocalVideo(bool enable);
 
         bool printDeviceInfo(); 
 

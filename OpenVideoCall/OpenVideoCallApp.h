@@ -11,7 +11,7 @@ class OpenVideoCallApp {
 
         void loadConfig(const AppConfig& cfg);
 
-        void run();
+        void run(bool open);
 
     private:
         CommandLineView* m_view;

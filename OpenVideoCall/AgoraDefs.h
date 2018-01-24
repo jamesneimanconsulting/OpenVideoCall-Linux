@@ -8,10 +8,10 @@ typedef struct AppConfig {
     uint32_t videoProfile;
     uint32_t audioProfile;
     uint32_t audioScenario;
-    uint32_t enableVideo;
-    uint32_t enableAudio;
-    uint32_t enableLocalVideo;
-    uint32_t enableLocalAudio;
+    bool enableVideo;
+    bool enableAudio;
+    bool enableLocalVideo;
+    bool enableLocalAudio;
 
     std::string appId;
     std::string channelId;

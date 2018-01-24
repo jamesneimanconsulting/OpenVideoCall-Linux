@@ -31,8 +31,8 @@ void OpenVideoCallApp::loadConfig(const AppConfig& cfg) {
     m_view->configure(cfg);
 }
 
-void OpenVideoCallApp::run() {
+void OpenVideoCallApp::run(bool open) {
     AGEngineModel::Get()->initialize();
-    m_view->run();
+    m_view->run(open);
 }
 

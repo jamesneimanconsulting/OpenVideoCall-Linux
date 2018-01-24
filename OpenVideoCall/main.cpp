@@ -35,18 +35,20 @@ int main(int argc, char * const argv[]) {
     uint32_t videoProfile = 38;
     parser.add_long_opt("videoProfile", &videoProfile, "video profile:refer IAgoraRtcEngine.h/option");
 
-    uint32_t enableVideo = 1;
+    bool enableVideo = true;
     parser.add_long_opt("enableVideo", &enableVideo, "enable video/option");
 
-    uint32_t enableAudio = 1;
+    bool enableAudio = true;
     parser.add_long_opt("enableAudio", &enableAudio, "enable audio/option");
 
-    uint32_t enableLocalVideo = 1;
+    bool enableLocalVideo = true;
     parser.add_long_opt("enableLocalVideo", &enableLocalVideo, "enable local video/option");
 
-    uint32_t enableLocalAudio = 1;
+    bool enableLocalAudio = true;
     parser.add_long_opt("enableLocalAudio", &enableLocalAudio, "enable local audio/option");
 
+    bool openVideoCall = false;
+    parser.add_long_opt("openVideoCall", &openVideoCall, "open video call after launch app /option");
 
     if (!parser.parse_opts(argc, argv) || appId.empty() || channelId.empty()) {
         ostringstream sout;
@@ -70,7 +72,7 @@ int main(int argc, char * const argv[]) {
 
     OpenVideoCallApp app;
     app.loadConfig(cfg);
-    app.run();
+    app.run(openVideoCall);
 
     return 0;
 }

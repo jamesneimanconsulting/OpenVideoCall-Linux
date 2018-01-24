@@ -24,7 +24,11 @@ void CommandLineView::configure(const AppConfig& config) {
         m_controller->sendMsg(this,MSG_CONFIGURE,(void*)&config);
 }
 
-void CommandLineView::run() {
+void CommandLineView::run(bool openVideoCall) {
+
+    if(openVideoCall) {
+        open();
+    }
 
     char buf[MAXLINE];
     memset(buf, 0, MAXLINE);
@@ -65,7 +69,7 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
 
         int flag = 0;
         sscanf(enable.c_str(),"%d",&flag);
-        return enableVideo(flag);
+        return enableVideo((bool)flag);
     }
     else if(cmd.compare("enable_audio") == 0) {
         string enable;
@@ -73,7 +77,7 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
 
         int flag = 0;
         sscanf(enable.c_str(),"%d",&flag);
-        return enableAudio(flag);
+        return enableAudio((bool)flag);
     }  
     else if(cmd.compare("enable_local_video") == 0) {
         string enable;
@@ -81,7 +85,7 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
 
         int flag = 0;
         sscanf(enable.c_str(),"%d",&flag);
-        return enableLocalVideo(flag);
+        return enableLocalVideo((bool)flag);
     }
     else if(cmd.compare("enable_local_audio") == 0) {
         string enable;
@@ -89,7 +93,7 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
 
         int flag = 0;
         sscanf(enable.c_str(),"%d",&flag);
-        return enableLocalAudio(flag);
+        return enableLocalAudio((bool)flag);
     }  
 
     else if(cmd.compare("print_device_info") == 0) {
@@ -128,28 +132,28 @@ bool CommandLineView::close() {
     return m_controller->sendMsg(this, MSG_CLOSE, NULL);
 }
 
-bool CommandLineView::enableVideo(int enable) {
+bool CommandLineView::enableVideo(bool enable) {
     if(!m_controller)
         return false;
 
     return m_controller->sendMsg(this, MSG_ENABLE_VIDEO , (void*)&enable);
 }
 
-bool CommandLineView::enableAudio(int enable) {
+bool CommandLineView::enableAudio(bool enable) {
     if(!m_controller)
         return false;
 
     return m_controller->sendMsg(this, MSG_ENABLE_AUDIO , (void*)&enable);
 }
 
-bool CommandLineView::enableLocalVideo(int enable) {
+bool CommandLineView::enableLocalVideo(bool enable) {
     if(!m_controller)
         return false;
 
     return m_controller->sendMsg(this, MSG_ENABLE_LOCAL_VIDEO , (void*)&enable);
 }
 
-bool CommandLineView::enableLocalAudio(int enable) {
+bool CommandLineView::enableLocalAudio(bool enable) {
     if(!m_controller)
         return false;
 
