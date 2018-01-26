@@ -4,13 +4,13 @@ endif
 LINK=${CXX}
 
 TOPDIR=`pwd`
-LIBPATH=./../libs
+LIBPATH=./../../libs
 LDFLAGS= -static-libgcc -std=c++11
 CXXFLAGS  = -std=c++0x -fPIC -g -fno-omit-frame-pointer \
 			-DNDEBUG=1 -Wconversion -O3 -Wall -W -fvisibility=hidden
-					
+ 					
 LIB	   = -pthread -lpthread -L$(LIBPATH) -lmediasdk -lRtcEngine -ldl -lrt 
-INCPATH =-I. -I./../include
+INCPATH =-I. -I./../../include
 
 SRC =$(wildcard *.cpp View/*.cpp Controller/*.cpp EngineModel/*.cpp )
 OBJ=$(addsuffix .o, main $(basename $(SRC)))
