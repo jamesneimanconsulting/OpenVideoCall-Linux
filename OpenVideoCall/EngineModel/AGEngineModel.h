@@ -36,6 +36,10 @@ class AGEngineModel : public MsgHandler
         bool onConfigureMsg(void* msg);
         bool onPrintDeviceInfoMsg(void* msg);
         bool onSetCurCameraMsg(void* msg); 
+        bool onGetPlayoutVolMsg(void* msg);
+        bool onGetInputVolMsg(void* msg);
+        bool onSetPlayoutVolMsg(void* msg);
+        bool onSetInputVolMsg(void* msg);
         bool onExitMsg(void* msg); 
 
         void release(); 

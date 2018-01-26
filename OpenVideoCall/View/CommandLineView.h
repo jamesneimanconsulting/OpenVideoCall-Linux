@@ -33,5 +33,13 @@ class CommandLineView : public MsgHandler{
 
         bool setCurCamera(const string& cameraId); 
 
+        bool getPlayoutVol(); 
+
+        bool getInputVol(); 
+
+        bool setInputVol(int vol);
+
+        bool setPlayoutVol(int vol);
+
         bool exit(); 
 };

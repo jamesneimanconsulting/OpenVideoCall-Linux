@@ -7,7 +7,6 @@ AGPlayoutManager::AGPlayoutManager()
 {
 }
 
-
 AGPlayoutManager::~AGPlayoutManager()
 {
     close();
@@ -41,16 +40,14 @@ void AGPlayoutManager::close()
     }
 }
 
-uint8_t AGPlayoutManager::getVolume()
+bool AGPlayoutManager::getVolume(int& vol)
 {
-    int vol = 0;
-
     if (m_deviceManager == NULL || m_deviceManager->get() == NULL)
-        return 0;
+        return false;
 
-    (*m_deviceManager)->getPlaybackDeviceVolume(&vol);
+    int ret = (*m_deviceManager)->getPlaybackDeviceVolume(&vol);
 
-    return (uint8_t)vol;
+    return ret == 0 ? true : false;
 }
 
 bool AGPlayoutManager::setVolume(uint8_t vol)

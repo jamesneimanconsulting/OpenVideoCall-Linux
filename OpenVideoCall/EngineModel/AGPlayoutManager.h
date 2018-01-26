@@ -22,7 +22,7 @@ class AGPlayoutManager
         bool create(IRtcEngine* rtcEngine);
         void close();
 
-        uint8_t getVolume();
+        bool getVolume(int& vol);
         bool setVolume(uint8_t vol);
         uint8_t getDeviceCount();
 

@@ -30,6 +30,10 @@ AGEngineModel::AGEngineModel() {
     registerHandler(MSG_ENABLE_LOCAL_AUDIO, (handler_ptr)&AGEngineModel::onEnableLocalAudioMsg);
     registerHandler(MSG_PRINT_DEVICE_INFO, (handler_ptr)&AGEngineModel::onPrintDeviceInfoMsg);
     registerHandler(MSG_SET_CUR_CAMERA, (handler_ptr)&AGEngineModel::onSetCurCameraMsg);
+    registerHandler(MSG_GET_PLAYOUT_VOL, (handler_ptr)&AGEngineModel::onGetPlayoutVolMsg);
+    registerHandler(MSG_GET_INPUT_VOL, (handler_ptr)&AGEngineModel::onGetInputVolMsg);
+    registerHandler(MSG_SET_PLAYOUT_VOL, (handler_ptr)&AGEngineModel::onSetPlayoutVolMsg);
+    registerHandler(MSG_SET_INPUT_VOL, (handler_ptr)&AGEngineModel::onSetInputVolMsg);
     registerHandler(MSG_EXIT, (handler_ptr)&AGEngineModel::onExitMsg);
 
     m_engineEventHandler.setEventReceiver(this);
@@ -189,6 +193,38 @@ bool AGEngineModel::onSetCurCameraMsg(void* msg) {
         return false;
 
     return m_cameraMgr->setCurDevice(deviceId->c_str());
+}
+
+bool AGEngineModel::onGetPlayoutVolMsg(void* msg) {
+    int* vol = reinterpret_cast<int*>(msg);
+    if(!m_playoutMgr)
+        return false;
+
+    return m_playoutMgr->getVolume(*vol);
+}
+
+bool AGEngineModel::onGetInputVolMsg(void* msg) {
+    int* vol = reinterpret_cast<int*>(msg);
+    if(!m_audInMgr)
+        return false;
+
+    return m_audInMgr->getVolume(*vol);
+}
+
+bool AGEngineModel::onSetInputVolMsg(void* msg) {
+    int* vol = reinterpret_cast<int*>(msg);
+    if(!m_audInMgr)
+        return false;
+
+    return m_audInMgr->setVolume(*vol);
+}
+
+bool AGEngineModel::onSetPlayoutVolMsg(void* msg) {
+    int* vol = reinterpret_cast<int*>(msg);
+    if(!m_playoutMgr)
+        return false;
+
+    return m_playoutMgr->setVolume(*vol);
 }
 
 void AGEngineModel::release() {

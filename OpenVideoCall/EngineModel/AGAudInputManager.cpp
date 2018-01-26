@@ -40,16 +40,14 @@ void AGAudInputManager::close()
     }
 }
 
-uint8_t AGAudInputManager::getVolume()
+bool AGAudInputManager::getVolume(int& vol)
 {
-    int vol = 0;
-
     if (m_deviceManager == NULL || m_deviceManager->get() == NULL)
-        return 0;
+        return false;
 
-    (*m_deviceManager)->getRecordingDeviceVolume(&vol);
+    int ret = (*m_deviceManager)->getRecordingDeviceVolume(&vol);
 
-    return (uint8_t)vol;
+    return ret == 0 ? true : false;
 }
 
 bool AGAudInputManager::setVolume(uint8_t vol)
