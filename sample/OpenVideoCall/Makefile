@@ -9,7 +9,7 @@ LDFLAGS= -static-libgcc -std=c++11
 CXXFLAGS  = -std=c++0x -fPIC -g -fno-omit-frame-pointer \
 			-DNDEBUG=1 -Wconversion -O3 -Wall -W -fvisibility=hidden
  					
-LIB	   = -pthread -lpthread -L$(LIBPATH) -lmediasdk -lRtcEngine -ldl -lrt 
+LIB	   = -pthread -lpthread -L$(LIBPATH) -lmediasdk -lRtcEngine -ldl -lrt -lasound -lpulse 
 INCPATH =-I. -I./../../include
 
 SRC =$(wildcard *.cpp View/*.cpp Controller/*.cpp EngineModel/*.cpp )
