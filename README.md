@@ -14,8 +14,6 @@
 
 本开源项目使用 **c++** 语言，你可以在这里找到使用 **c++** 的项目：[OpenVideoCall-Linux](https://github.com/AgoraIO/OpenVideoCall-Linux)
 
-你也可以在这里查看入门版的示例项目：[Agora-iOS-Tutorial-Swift-1to1](https://github.com/AgoraIO/Agora-iOS-Tutorial-Swift-1to1)
-
 Agora视频SDK支持 iOS / Android / Windows / macOS/ Linux 等多个平台，你可以查看对应各平台的示例项目：
 
 - [OpenVideoCall-Android](https://github.com/AgoraIO/OpenVideoCall-Android)
@@ -35,6 +33,7 @@ static let AppId: String = "Your App ID"
 - libRtcEngine.a
 
 两个文件复制到本项目的 “OpenVideoCall/libs” 文件夹下。
+在sample/OpenVideoCall下 输入命令 make， 便可编译生成openVideoCall demo。在run.sh中配置执行demo所需要的参数。
 
 ## 运行环境
 * XCode 8.0 +
