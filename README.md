@@ -12,13 +12,12 @@
 - 切换摄像头；
 - 选择分辨率、码率和帧率；
 
-本开源项目使用 **c++** 语言，你可以在这里找到使用 **c++** 的项目：[OpenVideoCall-Linux](https://github.com/AgoraIO/OpenVideoCall-Linux)
-
 Agora视频SDK支持 iOS / Android / Windows / macOS/ Linux 等多个平台，你可以查看对应各平台的示例项目：
 
 - [OpenVideoCall-Android](https://github.com/AgoraIO/OpenVideoCall-Android)
 - [OpenVideoCall-Windows](https://github.com/AgoraIO/OpenVideoCall-Windows)
 - [OpenVideoCall-macOS](https://github.com/AgoraIO/OpenVideoCall-macOS)
+- [OpenVideoCall-iOS](https://github.com/AgoraIO/OpenVideoCall-iOS)
 
 ## 运行示例程序
 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 KeyCenter.swift
