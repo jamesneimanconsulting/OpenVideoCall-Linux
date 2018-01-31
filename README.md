@@ -34,7 +34,35 @@ static let AppId: String = "Your App ID"
 
 两个文件复制到本项目的 “OpenVideoCall/libs” 文件夹下。
 在sample/OpenVideoCall下 输入命令 make， 便可编译生成openVideoCall demo。在run.sh中配置执行demo所需要的参数。
-
+openVideoCall 为命令行程序。使用方法如下：
+command:
+- open
+  开启通话。
+- close
+  关闭通话。
+- enable_video 
+  打开/关闭 全局视频功能，enable_video 0 为关闭视频功能，enable_video 1为打开视频功能
+- enable_audio
+  打开/关闭 全局音频功能
+- enable_local_video
+  打开/关闭 本地视频功能，enable_local_video 0 为关闭视频功能，enable_local_video 1为打开视频功能
+- enable_local_audio
+  打开/关闭 本地音频功能，enable_local_audio 0 为关闭视频功能，enable_local_audio 1为打开视频功能
+- print_device_info
+  打印设备信息
+- set_cur_camera
+  设置当前工作的摄像头，set_cur_camera ‘device id ’ ，device id可以通过print_device_info 得到
+- get_playout_vol
+  打印当前外放音量大小
+- get_input_vol
+  打印本地采集音量大小
+- set_playout_vol
+  设置外放音量大小，set_playout_vol '音量值'
+- set_input_vol
+  设置本地采集音量大小，set_input_vol '音量值'
+- exit
+  退出程序
+  
 ## 运行环境
 * XCode 8.0 +
 * iOS 真机设备
