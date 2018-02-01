@@ -20,10 +20,10 @@ Agora视频SDK支持 iOS / Android / Windows / macOS/ Linux 等多个平台，�
 - [OpenVideoCall-iOS](https://github.com/AgoraIO/OpenVideoCall-iOS)
 
 ## 运行示例程序
-首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 KeyCenter.swift
+首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 run.sh
 
 ```
-static let AppId: String = "Your App ID"
+--appId "your app ID"
 ```
 
 然后在 [Agora.io SDK](https://www.agora.io/cn/blog/download/) 下载 **视频通话 + 直播 SDK**，解压后将其中**libs**文件夹下的 
