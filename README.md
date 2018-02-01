@@ -64,11 +64,13 @@ command:
   
 ## 系统运行环境
 * OS:
-* Ubuntu 12.04 x64 或更高版本
-* CentOS 7 以上版本
+  - Ubuntu 12.04 x64 或更高版本
+  - CentOS 7 以上版本
 
-* CPU:x86_64
-* Compiler: gcc 4.8 and above
+* CPU:
+  - x86_64
+* Compiler:
+  - gcc 4.8 and above
 
 ## 音视频依赖的预安装库
 *
