@@ -22,10 +22,10 @@ Agora Video SDK supports iOS / Android / Windows / macOS etc. You can find demos
 - [OpenVideoCall-Windows](https://github.com/AgoraIO/OpenVideoCall-Windows)
 
 ## Running the App
-First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID. define the APP_ID with your App ID.
+First, create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID. set appID in run.sh
 
 ```
-#define APP_ID _T("Your App ID")
+--appId "Your app ID"
 ```
 
 Next, download the **Agora Video SDK** from [Agora.io SDK](https://www.agora.io/en/blog/download/).
