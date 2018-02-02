@@ -217,8 +217,8 @@ bool CommandLineView::setPlayoutVol(int vol) {
     if(!m_controller)
         return false;
 
-    if((vol > 255) || (vol < 0)) {
-        cout<< "volumn range should be 0~255 " << endl;
+    if((vol > 100) || (vol < 0)) {
+        cout<< "volumn range should be 0~100 " << endl;
         return false;
     }
 
@@ -229,8 +229,8 @@ bool CommandLineView::setInputVol(int vol) {
     if(!m_controller)
         return false;
 
-    if((vol > 255) || (vol < 0)) {
-        cout<< "volumn range should be 0~255 " << endl;
+    if((vol > 100) || (vol < 0)) {
+        cout<< "volumn range should be 0~100 " << endl;
         return false;
     }
 
