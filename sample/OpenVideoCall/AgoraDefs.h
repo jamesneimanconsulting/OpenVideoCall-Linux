@@ -44,4 +44,8 @@ typedef struct AppConfig {
 
 #define MSG_SET_PLAYOUT_VOL 0xD
 
-#define MSG_EXIT 0xE
+#define MSG_REGISTER_VIDEO_FRAME_OBSERVER 0xE
+
+#define MSG_REGISTER_AUDIO_FRAME_OBSERVER 0xF
+
+#define MSG_EXIT 0x10

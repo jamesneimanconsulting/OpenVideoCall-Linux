@@ -2,6 +2,8 @@
 #include <cstring>
 
 #include "IAgoraRtcEngine.h"
+#include "IAgoraMediaEngine.h"
+#include "AgoraBase.h"
 #include "AGEngine.h"
 
 AGEngine::AGEngine(IRtcEngineEventHandler* handler, const char* appId)
@@ -238,3 +240,24 @@ bool AGEngine::release()
     return true;
 }
 
+bool AGEngine::registerVideoFrameObserver(IVideoFrameObserver* videoObserver) {
+    agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
+    mediaEngine.queryInterface(m_agoraEngine, agora::AGORA_IID_MEDIA_ENGINE);
+    if(mediaEngine) {
+        mediaEngine->registerVideoFrameObserver(videoObserver);
+        return true;
+    }
+
+    return false;
+}
+
+bool AGEngine::registerAudioFrameObserver(IAudioFrameObserver* audioObserver) {
+    agora::util::AutoPtr<agora::media::IMediaEngine> mediaEngine;
+    mediaEngine.queryInterface(m_agoraEngine, agora::AGORA_IID_MEDIA_ENGINE);
+    if(mediaEngine) {
+        mediaEngine->registerAudioFrameObserver(audioObserver);
+        return true;
+    }
+
+    return false;
+}

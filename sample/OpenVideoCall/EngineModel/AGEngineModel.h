@@ -10,6 +10,8 @@ class AGEngine;
 class AGCameraManager;
 class AGAudInputManager;
 class AGPlayoutManager;
+class AGAudioFrameObserver;
+class AGVideoFrameObserver;
 
 class AGEngineModel : public MsgHandler
                       ,public IAGEventReceiver
@@ -41,7 +43,8 @@ class AGEngineModel : public MsgHandler
         bool onSetPlayoutVolMsg(void* msg);
         bool onSetInputVolMsg(void* msg);
         bool onExitMsg(void* msg); 
-
+        bool onRegisterAudioFrameObserver(void* msg);
+        bool onRegisterVideoFrameObserver(void* msg);
         void release(); 
     private:
         AGEngineEventHandler m_engineEventHandler;
@@ -49,6 +52,8 @@ class AGEngineModel : public MsgHandler
         AGCameraManager*  m_cameraMgr;
         AGAudInputManager* m_audInMgr;
         AGPlayoutManager* m_playoutMgr;
+        AGAudioFrameObserver* m_audioObserver;
+        AGVideoFrameObserver* m_videoObserver;
 
         AppConfig m_cfg;
 

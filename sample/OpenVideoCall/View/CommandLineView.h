@@ -41,5 +41,9 @@ class CommandLineView : public MsgHandler{
 
         bool setPlayoutVol(int vol);
 
+        bool registerAudioFrameObserver(int filter); 
+
+        bool registerVideoFrameObserver(int filter);
+
         bool exit(); 
 };
