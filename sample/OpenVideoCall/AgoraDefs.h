@@ -36,4 +36,16 @@ typedef struct AppConfig {
 
 #define MSG_SET_CUR_CAMERA 0x9
 
-#define MSG_EXIT 0xA
+#define MSG_GET_PLAYOUT_VOL 0xA
+
+#define MSG_GET_INPUT_VOL 0xB
+
+#define MSG_SET_INPUT_VOL 0xC
+
+#define MSG_SET_PLAYOUT_VOL 0xD
+
+#define MSG_REGISTER_VIDEO_FRAME_OBSERVER 0xE
+
+#define MSG_REGISTER_AUDIO_FRAME_OBSERVER 0xF
+
+#define MSG_EXIT 0x10

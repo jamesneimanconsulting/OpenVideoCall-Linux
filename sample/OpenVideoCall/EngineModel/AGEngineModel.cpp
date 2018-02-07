@@ -2,6 +2,7 @@
 #include"AGEngine.h"
 #include"AGCameraManager.h"
 #include"AGEventDef.h"
+#include"AGFrameObserver.h"
 
 #include<iostream>
 #include<string>
@@ -18,6 +19,10 @@ AGEngineModel* AGEngineModel::Get() {
 }
 
 AGEngineModel::AGEngineModel() {
+    m_engine = NULL;
+    m_cameraMgr = NULL;
+    m_audioObserver = NULL;
+    m_videoObserver = NULL;
 
     registerHandler(MSG_OPEN,(handler_ptr)&AGEngineModel::onOpenMsg);
     registerHandler(MSG_CLOSE, (handler_ptr)&AGEngineModel::onCloseMsg);
@@ -29,6 +34,8 @@ AGEngineModel::AGEngineModel() {
     registerHandler(MSG_PRINT_DEVICE_INFO, (handler_ptr)&AGEngineModel::onPrintDeviceInfoMsg);
     registerHandler(MSG_SET_CUR_CAMERA, (handler_ptr)&AGEngineModel::onSetCurCameraMsg);
     registerHandler(MSG_EXIT, (handler_ptr)&AGEngineModel::onExitMsg);
+    registerHandler(MSG_REGISTER_VIDEO_FRAME_OBSERVER , (handler_ptr)&AGEngineModel::onRegisterVideoFrameObserver);
+    registerHandler(MSG_REGISTER_AUDIO_FRAME_OBSERVER , (handler_ptr)&AGEngineModel::onRegisterAudioFrameObserver);
 
     m_engineEventHandler.setEventReceiver(this);
 }
@@ -38,33 +45,35 @@ AGEngineModel::~AGEngineModel() {
 }
 
 void AGEngineModel::initialize() {
-    if(!m_engine){
+    if(!m_engine)
         m_engine = new AGEngine(&m_engineEventHandler, m_cfg.appId.c_str());
-    }
 
     m_cameraMgr = new AGCameraManager();
+
 }
 
 bool AGEngineModel::onOpenMsg(void* msg) {
     cout << "AgoraRtcEngine:open" <<endl;
 
-    m_engine->enableVideo(m_cfg.enableVideo);
+    if(m_engine) {
+        m_engine->enableVideo(m_cfg.enableVideo);
 
-    m_engine->enableAudio(m_cfg.enableAudio);
+        m_engine->enableAudio(m_cfg.enableAudio);
 
-    m_engine->muteLocalVideo(!m_cfg.enableLocalVideo);
+        m_engine->muteLocalVideo(!m_cfg.enableLocalVideo);
 
-    m_engine->muteLocalAudio(!m_cfg.enableLocalAudio);
+        m_engine->muteLocalAudio(!m_cfg.enableLocalAudio);
 
-    m_engine->setVideoProfile(m_cfg.videoProfile);
+        m_engine->setVideoProfile(m_cfg.videoProfile);
 
-    m_engine->setAudioProfile(m_cfg.audioProfile, m_cfg.audioScenario);
+        m_engine->setAudioProfile(m_cfg.audioProfile, m_cfg.audioScenario);
 
-    m_engine->enableWebSdkInteroperability(m_cfg.enableWebSdkInteroperability);
+        m_engine->enableWebSdkInteroperability(m_cfg.enableWebSdkInteroperability);
 
-    int ret = m_engine->joinChannel(m_cfg.channelId.c_str(), m_cfg.uid, m_cfg.channelProfile); 
+        return m_engine->joinChannel(m_cfg.channelId.c_str(), m_cfg.uid, m_cfg.channelProfile); 
+    }
 
-    return ret;
+    return false;
 }
 
 bool AGEngineModel::onCloseMsg(void* msg) {
@@ -77,57 +86,55 @@ bool AGEngineModel::onCloseMsg(void* msg) {
 bool AGEngineModel::onEnableVideoMsg(void* msg) {
     bool enable = *(reinterpret_cast<bool*>(msg));
 
-    if(enable != m_cfg.enableVideo) {
+    if(enable != m_cfg.enableVideo && m_engine) {
         m_cfg.enableVideo =  enable;
-        m_engine->enableVideo(enable);
         cout << "AgoraRtcEngine: enable video: " << enable <<endl;
+        return m_engine->enableVideo(enable);
     } else {
         cout << "AgoraRtcEngine: already enabled video: " << enable <<endl;
+        return false;
     }
-
-    return true;
 }
 
 bool AGEngineModel::onEnableAudioMsg(void* msg) {
     bool enable = *(reinterpret_cast<bool*>(msg));
 
-    if(enable != m_cfg.enableAudio) {
+    if(enable != m_cfg.enableAudio && m_engine) {
         m_cfg.enableAudio =  enable;
-        m_engine->enableAudio(enable);
+
         cout << "AgoraRtcEngine: enable audio: " << enable <<endl;
+        return m_engine->enableAudio(enable);
     } else {
         cout << "AgoraRtcEngine: already enabled audio: " << enable <<endl;
+        return false;
     }
-
-    return true;
 }
 
 bool AGEngineModel::onEnableLocalVideoMsg(void* msg) {
     bool enable = *(reinterpret_cast<bool*>(msg));
 
-    if(enable != m_cfg.enableLocalVideo) {
+    if(enable != m_cfg.enableLocalVideo && m_engine) {
         m_cfg.enableLocalVideo =  enable;
-        m_engine->muteLocalVideo(!m_cfg.enableLocalVideo);
+
         cout << "AgoraRtcEngine: enable local video: " << enable <<endl;
+        return m_engine->muteLocalVideo(!m_cfg.enableLocalVideo);
     } else {
         cout << "AgoraRtcEngine: already enabled local video: " << enable <<endl;
+        return false;
     }
-
-    return true;
 }
 
 bool AGEngineModel::onEnableLocalAudioMsg(void* msg) {
     bool enable = *(reinterpret_cast<bool*>(msg));
 
-    if(enable != m_cfg.enableLocalAudio) {
+    if(enable != m_cfg.enableLocalAudio && m_engine) {
         m_cfg.enableLocalAudio =  enable;
-        m_engine->muteLocalAudio(!m_cfg.enableLocalAudio);
         cout << "AgoraRtcEngine: enable local audio: " << enable <<endl;
+        return m_engine->muteLocalAudio(!m_cfg.enableLocalAudio);
     } else {
         cout << "AgoraRtcEngine: already enabled local audio: " << enable <<endl;
+        return false;
     }
-
-    return true;
 }
 
 bool AGEngineModel::onConfigureMsg(void* msg) {
@@ -176,6 +183,37 @@ bool AGEngineModel::onSetCurCameraMsg(void* msg) {
     return m_cameraMgr->setCurDevice(deviceId->c_str());
 }
 
+
+bool AGEngineModel::onRegisterAudioFrameObserver(void* msg) {
+    bool* filter = reinterpret_cast<bool*>(msg);
+
+    if(m_audioObserver == NULL) {
+        m_audioObserver = new AGAudioFrameObserver();
+    }
+
+    m_audioObserver->setFilter(*filter);
+
+    if(*filter)
+        return m_engine->registerAudioFrameObserver(m_audioObserver);
+    else
+        return m_engine->registerAudioFrameObserver(NULL);
+}
+
+bool AGEngineModel::onRegisterVideoFrameObserver(void* msg) {
+    bool* filter = reinterpret_cast<bool*>(msg);
+
+    if(m_videoObserver == NULL) {
+        m_videoObserver = new AGVideoFrameObserver();
+    }
+
+    m_videoObserver->setFilter(*filter);
+
+    if(*filter)
+        return m_engine->registerVideoFrameObserver(m_videoObserver);
+    else
+        return m_engine->registerVideoFrameObserver(NULL);
+}
+
 void AGEngineModel::release() {
     if(m_cameraMgr) {
         delete m_cameraMgr;
@@ -183,11 +221,23 @@ void AGEngineModel::release() {
     }
 
     if(m_engine) {
+        m_engine->registerVideoFrameObserver(NULL);
+        m_engine->registerAudioFrameObserver(NULL);
+        
+        if(m_audioObserver) {
+            delete m_audioObserver;
+            m_audioObserver = NULL;
+        }
+
+        if(m_videoObserver) {
+            delete m_videoObserver;
+            m_videoObserver = NULL;
+        }
+
         delete m_engine;
         m_engine = NULL;
     }
 }
-
 
 void AGEngineModel::onEvent(int id, void* pData) {
     switch(id) {

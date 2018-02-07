@@ -104,10 +104,40 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
 
         return setCurCamera(cameraId);
     }
+    else if(cmd.compare( "register_observer") == 0) {
+        string type;
+        params >> type;
+
+        string filter;
+        params >> filter;
+
+        int nFilter = 0;
+        sscanf(filter.c_str(),"%d",&nFilter);
+        if(type.compare("video") == 0)
+            return registerVideoFrameObserver(nFilter);
+        else if( type.compare("audio") == 0 )
+            return registerAudioFrameObserver(nFilter);
+        else
+            return false;
+    }
     else {
         cout<< "WARNING:invalid command: " << cmd <<endl;
         return false;
     }
+}
+
+bool CommandLineView::registerVideoFrameObserver(int filter) {
+    if(!m_controller)
+        return false;
+
+    return m_controller->sendMsg(this, MSG_REGISTER_VIDEO_FRAME_OBSERVER,(void*)&filter);
+}
+
+bool CommandLineView::registerAudioFrameObserver(int filter) {
+    if(!m_controller)
+        return false;
+
+    return m_controller->sendMsg(this, MSG_REGISTER_AUDIO_FRAME_OBSERVER,(void*)&filter);
 }
 
 bool CommandLineView::printDeviceInfo() {
