@@ -79,6 +79,15 @@ const char* AGEngine::getCallID()
     return uid->c_str();
 }
 
+bool AGEngine::enableWebSdkInteroperability(bool enable)
+{
+    RtcEngineParameters rep(*m_agoraEngine);
+    int ret = -1;
+    ret = rep.enableWebSdkInteroperability(enable);
+
+    return ret == 0 ? true : false;
+}
+
 bool AGEngine::enableVideo(bool enable)
 {
     int ret = -1;

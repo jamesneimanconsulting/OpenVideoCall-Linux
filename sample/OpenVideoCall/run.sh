@@ -11,4 +11,5 @@
                  --enableAudio 1 \
                  --enableLocalVideo 1 \
                  --enableLocalAudio 1 \
+                 --enableWebSdkInteroperability 0 \
                  --openVideoCall 0
