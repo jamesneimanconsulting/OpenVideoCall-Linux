@@ -70,6 +70,8 @@ bool AGEngineModel::onOpenMsg(void* msg) {
 
     m_engine->setAudioProfile(m_cfg.audioProfile, m_cfg.audioScenario);
 
+    m_engine->enableWebSdkInteroperability(m_cfg.enableWebSdkInteroperability);
+
     int ret = m_engine->joinChannel(m_cfg.channelId.c_str(), m_cfg.uid, m_cfg.channelProfile); 
 
     return ret;

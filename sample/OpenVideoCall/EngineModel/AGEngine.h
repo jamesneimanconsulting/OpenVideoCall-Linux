@@ -66,6 +66,8 @@ class AGEngine
         int createMessageStream();
 
         bool sendChatMessage(int streamId, const char* chatMessage);
+        
+        bool enableWebSdkInteroperability(bool enable);
 
         bool release();
 

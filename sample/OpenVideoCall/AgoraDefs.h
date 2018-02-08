@@ -12,6 +12,7 @@ typedef struct AppConfig {
     bool enableAudio;
     bool enableLocalVideo;
     bool enableLocalAudio;
+    bool enableWebSdkInteroperability;
 
     std::string appId;
     std::string channelId;

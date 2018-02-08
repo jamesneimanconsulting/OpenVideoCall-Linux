@@ -47,6 +47,9 @@ int main(int argc, char * const argv[]) {
     bool enableLocalAudio = true;
     parser.add_long_opt("enableLocalAudio", &enableLocalAudio, "enable local audio/option");
 
+    bool enableWebSdkInteroperability = false;
+    parser.add_long_opt("enableWebSdkInteroperability", &enableWebSdkInteroperability, "enable web sdk interoperability/option");
+
     bool openVideoCall = false;
     parser.add_long_opt("openVideoCall", &openVideoCall, "open video call after launch app /option");
 
@@ -69,6 +72,7 @@ int main(int argc, char * const argv[]) {
     cfg.appId = appId;
     cfg.channelId = channelId;
     cfg.channelProfile = channelProfile; 
+    cfg.enableWebSdkInteroperability = enableWebSdkInteroperability;
 
     OpenVideoCallApp app;
     app.loadConfig(cfg);
