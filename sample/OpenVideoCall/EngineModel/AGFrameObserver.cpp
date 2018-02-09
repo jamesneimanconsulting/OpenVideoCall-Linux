@@ -14,6 +14,7 @@ bool AGAudioFrameObserver::onMixedAudioFrame(IAudioFrameObserver::AudioFrame &au
         return true;
 
     saveAudioFrame(0, audioFrame, "onMixedAudioFrame");
+    return true;
 }
 
 bool AGAudioFrameObserver::onPlaybackAudioFrame(IAudioFrameObserver::AudioFrame &audioFrame) {
@@ -22,6 +23,7 @@ bool AGAudioFrameObserver::onPlaybackAudioFrame(IAudioFrameObserver::AudioFrame 
         return true;
 
     saveAudioFrame(0, audioFrame, "onPlaybackAudioFrame");
+    return true;
 }
 
 bool AGAudioFrameObserver::onRecordAudioFrame(IAudioFrameObserver::AudioFrame &audioFrame) {
@@ -30,6 +32,7 @@ bool AGAudioFrameObserver::onRecordAudioFrame(IAudioFrameObserver::AudioFrame &a
         return true;
 
     saveAudioFrame(0, audioFrame, "onRecordAudioFrame");
+    return true;
 }
 
 bool AGAudioFrameObserver::onPlaybackAudioFrameBeforeMixing(unsigned int uid, IAudioFrameObserver::AudioFrame& audioFrame) {
@@ -43,16 +46,21 @@ bool AGAudioFrameObserver::onPlaybackAudioFrameBeforeMixing(unsigned int uid, IA
 
 void AGAudioFrameObserver::saveAudioFrame(int uid, const IAudioFrameObserver::AudioFrame& audioFrame, const char* tag) {
     std::string info_name = std::string(tag); 
+    info_name += "_";
 
     char uidbuf[65];
     snprintf(uidbuf, sizeof(uidbuf),"%u", uid);
     info_name += std::string(uidbuf); 
-
-    char channelsbuf[65];
-    snprintf(channelsbuf, sizeof(channelsbuf),"%u", audioFrame.channels);
-
     info_name += "_";
+
+    char channelsbuf[20];
+    snprintf(channelsbuf, sizeof(channelsbuf),"%u", audioFrame.channels);
     info_name += std::string(channelsbuf);
+    info_name += "_";
+
+    char bitRatebuf[20];
+    snprintf(bitRatebuf, sizeof(bitRatebuf),"%u", audioFrame.samplesPerSec);
+    info_name += std::string(bitRatebuf);
     info_name += ".pcm";  
 
     const uint8_t* data = static_cast<const uint8_t*>(audioFrame.buffer);
@@ -89,10 +97,12 @@ bool AGVideoFrameObserver::onRenderVideoFrame(unsigned int uid, VideoFrame& vide
         return true;
 
     saveVideoFrame(uid, videoFrame, "onRenderVideoFrame"); 
+    return true;
 }
 
 void AGVideoFrameObserver::saveVideoFrame(int uid, const IVideoFrameObserver::VideoFrame& videoFrame, const char* tag) {
     std::string info_name = std::string(tag); 
+    info_name += "_";
 
     char uidbuf[65];
     snprintf(uidbuf, sizeof(uidbuf),"%u", uid);
@@ -124,7 +134,4 @@ void AGVideoFrameObserver::saveVideoFrame(int uid, const IVideoFrameObserver::Vi
 
     ::fclose(fp);
 }
-
-
-
 
