@@ -104,29 +104,6 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
 
         return setCurCamera(cameraId);
     }
-    else if(cmd.compare("get_playout_vol") == 0) {
-
-        return getPlayoutVol();
-    }
-    else if(cmd.compare("get_input_vol") == 0) {
-        return getInputVol();
-    }
-    else if(cmd.compare("set_input_vol") == 0) {
-        string vol;
-        params >> vol;
-
-        int nVol = 0;
-        sscanf(vol.c_str(),"%d",&nVol);
-        return setInputVol(nVol);
-    }
-    else if(cmd.compare("set_playout_vol") == 0) {
-        string vol;
-        params >> vol;
-
-        int nVol = 0;
-        sscanf(vol.c_str(),"%d",&nVol);
-        return setPlayoutVol(nVol);
-    }
     else {
         cout<< "WARNING:invalid command: " << cmd <<endl;
         return false;
@@ -187,54 +164,6 @@ bool CommandLineView::setCurCamera(const string& cameraId) {
         return false;
 
     return m_controller->sendMsg(this, MSG_SET_CUR_CAMERA , (void*)&cameraId);
-}
-
-bool CommandLineView::getPlayoutVol() {
-    if(!m_controller)
-        return false;
-
-    int vol = 0;
-    bool re = m_controller->sendMsg(this, MSG_GET_PLAYOUT_VOL , (void*)&vol);
-    if(re)
-        cout<< "playout audio volumn is: " << vol << endl;
-
-    return re;
-}
-
-bool CommandLineView::getInputVol() {
-    if(!m_controller)
-        return false;
-
-    int vol = 0;
-    bool re = m_controller->sendMsg(this, MSG_GET_INPUT_VOL , (void*)&vol);
-    if(re)
-        cout<< "input audio volumn is: " << vol << endl;
-
-    return re;
-}
-
-bool CommandLineView::setPlayoutVol(int vol) {
-    if(!m_controller)
-        return false;
-
-    if((vol > 100) || (vol < 0)) {
-        cout<< "volumn range should be 0~100 " << endl;
-        return false;
-    }
-
-    return m_controller->sendMsg(this, MSG_SET_PLAYOUT_VOL , (void*)&vol);
-}
-
-bool CommandLineView::setInputVol(int vol) {
-    if(!m_controller)
-        return false;
-
-    if((vol > 100) || (vol < 0)) {
-        cout<< "volumn range should be 0~100 " << endl;
-        return false;
-    }
-
-    return m_controller->sendMsg(this, MSG_SET_INPUT_VOL , (void*)&vol);
 }
 
 bool CommandLineView::exit() {

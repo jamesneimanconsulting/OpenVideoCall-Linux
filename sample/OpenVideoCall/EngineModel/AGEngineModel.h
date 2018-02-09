@@ -8,8 +8,6 @@
 class EngineController;
 class AGEngine;
 class AGCameraManager;
-class AGAudInputManager;
-class AGPlayoutManager;
 
 class AGEngineModel : public MsgHandler
                       ,public IAGEventReceiver
@@ -36,10 +34,6 @@ class AGEngineModel : public MsgHandler
         bool onConfigureMsg(void* msg);
         bool onPrintDeviceInfoMsg(void* msg);
         bool onSetCurCameraMsg(void* msg); 
-        bool onGetPlayoutVolMsg(void* msg);
-        bool onGetInputVolMsg(void* msg);
-        bool onSetPlayoutVolMsg(void* msg);
-        bool onSetInputVolMsg(void* msg);
         bool onExitMsg(void* msg); 
 
         void release(); 
@@ -47,8 +41,6 @@ class AGEngineModel : public MsgHandler
         AGEngineEventHandler m_engineEventHandler;
         AGEngine*   m_engine;
         AGCameraManager*  m_cameraMgr;
-        AGAudInputManager* m_audInMgr;
-        AGPlayoutManager* m_playoutMgr;
 
         AppConfig m_cfg;
 

@@ -1,8 +1,6 @@
 #include"AGEngineModel.h"
 #include"AGEngine.h"
 #include"AGCameraManager.h"
-#include"AGAudInputManager.h"
-#include"AGPlayoutManager.h"
 #include"AGEventDef.h"
 
 #include<iostream>
@@ -30,10 +28,6 @@ AGEngineModel::AGEngineModel() {
     registerHandler(MSG_ENABLE_LOCAL_AUDIO, (handler_ptr)&AGEngineModel::onEnableLocalAudioMsg);
     registerHandler(MSG_PRINT_DEVICE_INFO, (handler_ptr)&AGEngineModel::onPrintDeviceInfoMsg);
     registerHandler(MSG_SET_CUR_CAMERA, (handler_ptr)&AGEngineModel::onSetCurCameraMsg);
-    registerHandler(MSG_GET_PLAYOUT_VOL, (handler_ptr)&AGEngineModel::onGetPlayoutVolMsg);
-    registerHandler(MSG_GET_INPUT_VOL, (handler_ptr)&AGEngineModel::onGetInputVolMsg);
-    registerHandler(MSG_SET_PLAYOUT_VOL, (handler_ptr)&AGEngineModel::onSetPlayoutVolMsg);
-    registerHandler(MSG_SET_INPUT_VOL, (handler_ptr)&AGEngineModel::onSetInputVolMsg);
     registerHandler(MSG_EXIT, (handler_ptr)&AGEngineModel::onExitMsg);
 
     m_engineEventHandler.setEventReceiver(this);
@@ -49,10 +43,6 @@ void AGEngineModel::initialize() {
     }
 
     m_cameraMgr = new AGCameraManager();
-
-    m_audInMgr = new AGAudInputManager();
-
-    m_playoutMgr = new AGPlayoutManager();
 }
 
 bool AGEngineModel::onOpenMsg(void* msg) {
@@ -81,8 +71,6 @@ bool AGEngineModel::onCloseMsg(void* msg) {
     cout << "AgoraRtcEngine:close" <<endl;
 
     m_cameraMgr->close();
-    m_audInMgr->close();
-    m_playoutMgr->close();
     return m_engine->leaveChannel(); 
 }
 
@@ -167,20 +155,11 @@ bool AGEngineModel::onPrintDeviceInfoMsg(void* msg) {
     if(m_cameraMgr->getCurDeviceId(curDeviceId)) 
         cout <<"current camera device id is:" << curDeviceId << endl;
 
-    cout <<"audio input device number is:" << (uint32_t)m_audInMgr->getDeviceCount() << endl;
-    //cout <<"current audio input device id is:" << auInputId << endl;
-
-    cout <<"audio playout device number is:" << (uint32_t)m_playoutMgr->getDeviceCount() << endl;
-    //cout <<"current audio playout device id is:" << auPlayoutId << endl;
-
     return true;
 }
 
 bool AGEngineModel::onExitMsg(void* msg) {
     m_cameraMgr->close();
-    m_audInMgr->close();
-    m_playoutMgr->close();
-
     m_engine->leaveChannel();
     m_engine->release();
 
@@ -197,52 +176,10 @@ bool AGEngineModel::onSetCurCameraMsg(void* msg) {
     return m_cameraMgr->setCurDevice(deviceId->c_str());
 }
 
-bool AGEngineModel::onGetPlayoutVolMsg(void* msg) {
-    int* vol = reinterpret_cast<int*>(msg);
-    if(!m_playoutMgr)
-        return false;
-
-    return m_playoutMgr->getVolume(*vol);
-}
-
-bool AGEngineModel::onGetInputVolMsg(void* msg) {
-    int* vol = reinterpret_cast<int*>(msg);
-    if(!m_audInMgr)
-        return false;
-
-    return m_audInMgr->getVolume(*vol);
-}
-
-bool AGEngineModel::onSetInputVolMsg(void* msg) {
-    int* vol = reinterpret_cast<int*>(msg);
-    if(!m_audInMgr)
-        return false;
-
-    return m_audInMgr->setVolume(*vol);
-}
-
-bool AGEngineModel::onSetPlayoutVolMsg(void* msg) {
-    int* vol = reinterpret_cast<int*>(msg);
-    if(!m_playoutMgr)
-        return false;
-
-    return m_playoutMgr->setVolume(*vol);
-}
-
 void AGEngineModel::release() {
     if(m_cameraMgr) {
         delete m_cameraMgr;
         m_cameraMgr = NULL;
-    }
-
-    if(m_audInMgr) {
-        delete m_audInMgr;
-        m_audInMgr = NULL;
-    }
-
-    if(m_playoutMgr) {
-        delete m_playoutMgr;
-        m_playoutMgr = NULL;
     }
 
     if(m_engine) {
@@ -256,8 +193,6 @@ void AGEngineModel::onEvent(int id, void* pData) {
     switch(id) {
         case EID_JOINCHANNEL_SUCCESS: 
             m_cameraMgr->create(m_engine->getRtcEngine());
-            m_audInMgr->create(m_engine->getRtcEngine());
-            m_playoutMgr->create(m_engine->getRtcEngine());
             break;
     }
 }
