@@ -53,14 +53,6 @@ openVideoCall is a commandline demo. Commands as follows:
   print video and audio device info
 - set_cur_camera
   set current carmera,'set_cur_camera deviceId' you can get deviceID by print_device_info
-- get_playout_vol
-  get playout audio volumn
-- get_input_vol
-  get input audio volumn
-- set_playout_vol
-  set playout audio volumn
-- set_input_vol
-  set input audio volumn
 - exit
   exit app
 
