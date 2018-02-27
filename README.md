@@ -51,14 +51,6 @@ command:
   打印设备信息
 - set_cur_camera
   设置当前工作的摄像头，set_cur_camera ‘device id ’ ，device id可以通过print_device_info 得到
-- get_playout_vol
-  打印当前外放音量大小
-- get_input_vol
-  打印本地采集音量大小
-- set_playout_vol
-  设置外放音量大小，set_playout_vol '音量值'
-- set_input_vol
-  设置本地采集音量大小，set_input_vol '音量值'
 - exit
   退出程序
   
