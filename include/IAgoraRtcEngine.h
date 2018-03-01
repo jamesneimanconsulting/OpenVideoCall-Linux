@@ -44,8 +44,6 @@ enum MEDIA_ENGINE_EVENT_CODE_TYPE
     // iOS adm sample rate changed
     MEDIA_ENGINE_AUDIO_ADM_REQUIRE_RESTART = 110,
     MEDIA_ENGINE_AUDIO_ADM_SPECIAL_RESTART = 111,
-    // iOS keep AVAudioSession settings
-    MEDIA_ENGINE_AUDIO_KEEP_SESSION_CONFIG = 120
 };
 
 enum MEDIA_DEVICE_STATE_TYPE
@@ -279,9 +277,17 @@ enum AUDIO_REVERB_TYPE
 {
     AUDIO_REVERB_DRY_LEVEL = 0, // (dB, [-20,10]), the level of the dry signal
     AUDIO_REVERB_WET_LEVEL = 1, // (dB, [-20,10]), the level of the early reflection signal (wet signal)
-    AUDIO_REVERB_ROOM_SIZE = 2, // ([0，100]), the room size of the reflection
+    AUDIO_REVERB_ROOM_SIZE = 2, // ([0, 100]), the room size of the reflection
     AUDIO_REVERB_WET_DELAY = 3, // (ms, [0, 200]), the length of the initial delay of the wet signal in ms
-    AUDIO_REVERB_STRENGTH = 4, // ([0，100]), the strength of the late reverberation
+    AUDIO_REVERB_STRENGTH = 4, // ([0, 100]), the strength of the late reverberation
+};
+    
+enum REMOTE_VIDEO_STATE
+{
+    // REMOTE_VIDEO_STATE_STOPPED is not used at this version. Ignore this value.
+    // REMOTE_VIDEO_STATE_STOPPED = 0,  // Default state, video is started or remote user disabled/muted video stream
+    REMOTE_VIDEO_STATE_RUNNING = 1,  // Running state, remote video can be displayed normally
+    REMOTE_VIDEO_STATE_FROZEN = 2,    // Remote video is frozen, probably due to network issue.
 };
 
 struct AudioVolumeInfo
@@ -404,6 +410,21 @@ typedef struct TranscodingUser {
     {}
 
 } TranscodingUser;
+    
+typedef struct VideoWatermark {
+    VideoWatermark() :
+       url(nullptr),
+       x(0),
+       y(0),
+       width(0),
+       height(0)
+    {}
+    const char* url;
+    int x;
+    int y;
+    int width;
+    int height;
+} VideoWatermark;
 
 typedef struct LiveTranscoding {
     int width;
@@ -418,8 +439,8 @@ typedef struct LiveTranscoding {
     unsigned int backgroundColor;
     unsigned int userCount;
     TranscodingUser *transcodingUsers;
-
     const char *transcodingExtraInfo;
+    VideoWatermark* watermark;
 
     AUDIO_SAMPLE_RATE_TYPE audioSampleRate;
     int audioBitrate;
@@ -435,8 +456,9 @@ typedef struct LiveTranscoding {
         , videoGop(30)
         , videoCodecProfile(VIDEO_CODEC_PROFILE_HIGH)
         , userCount(0)
-        , transcodingUsers(NULL)
-        , transcodingExtraInfo(NULL)
+        , transcodingUsers(nullptr)
+        , transcodingExtraInfo(nullptr)
+        , watermark(nullptr)
         , audioSampleRate(AUDIO_SAMPLE_RATE_48000)
         , audioBitrate(48)
         , audioChannels(1)
@@ -812,6 +834,11 @@ public:
         (void)height;
         (void)rotation;
     }
+    
+    virtual void onRemoteVideoStateChanged(uid_t uid, REMOTE_VIDEO_STATE state) {
+        (void)uid;
+        (void)state;
+    }
 
     /**
     * when the first remote video frame displayed, the function will be called
@@ -905,7 +932,7 @@ public:
     * when api call executed completely, the function will be called
     * @param [in] api
     *        the api name
-    * @param [in] error
+    * @param [in] err
     *        error code while 0 means OK
     */
     virtual void onApiCallExecuted(int err, const char* api, const char* result) {
@@ -1570,6 +1597,9 @@ public:
     virtual int addPublishStreamUrl(const char *url, bool transcodingEnabled) = 0;
     virtual int removePublishStreamUrl(const char *url) = 0;
     virtual int setLiveTranscoding(const LiveTranscoding &transcoding) = 0;
+    
+    virtual int addVideoWatermark(const VideoWatermark& watermark) = 0;
+    virtual int clearVideoWatermarks() = 0;
 
     virtual int addInjectStreamUrl(const char* url, const InjectStreamConfig& config) = 0;
     virtual int removeInjectStreamUrl(const char* url) = 0;
@@ -2006,6 +2036,168 @@ public:
     int setAudioMixingPosition(int pos /*in ms*/) {
         return m_parameter ? m_parameter->setInt("che.audio.mixing.file.position", pos) : -ERR_NOT_INITIALIZED;
     }
+
+    /**
+     * Get audio effect volume.
+     * @return return audio effect volume on success, or one value less than 0 otherwise.
+     */
+    int getEffectsVolume() {
+        if (!m_parameter) return -ERR_NOT_INITIALIZED;
+        int volume = 0;
+        int r = m_parameter->getInt("che.audio.game_get_effects_volume", volume);
+        if (r == 0)
+            r = volume;
+        return r;
+    }
+
+    /**
+     * Set audio effect volume.
+     * param [in] volume
+             The volume to be set.
+     * @return return 0 on success or error number otherwise.
+     */
+    int setEffectsVolume(int volume) {
+        return m_parameter ? m_parameter->setInt("che.audio.game_set_effects_volume", volume) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * Set audio effect volume for effect with id : soundId
+     * @param [in] soundId
+              The soundId of the effect to be set.
+     * @param [in] volume
+              The volume value to be set
+     * @return return 0 on success, and error number otherwise.
+     */
+    int setVolumeOfEffect(int soundId, int volume) {
+        return setObject(
+            "che.audio.game_adjust_effect_volume",
+            "{\"soundId\":%d,\"gain\":%d}",
+            soundId, volume);
+    }
+    /**
+     * To play effect
+     * @param [in] soundId
+     *        effect id
+     * @param [in] filePath
+     *        effect file path
+     * @param [in] loopCount
+     *        if loopCount
+     * @param [in] sendToFar
+     *        if send the effect to remote
+     * @param [in] pitch
+     *        sound pitch
+     * @param [in] pan
+     *        sound pan
+     * @param [in] gain
+     *        sound gain
+     * @param [in] publish
+     *        true  indicates that when this sound effect is played locally,
+     *              it is also published to Agora Could, so it can be heard by remote audience.
+     *
+     *        false indicates that when any sound effect is only heard locally without published to Agora Cloud.
+     * @return return 0 on success, error code otherwise.
+     *      
+     */
+    int playEffect(int soundId, const char* filePath, int loopCount, double pitch, double pan, int gain, bool publish) {
+#if defined(_WIN32)
+        util::AString path;
+        if (!m_parameter->convertPath(filePath, path))
+            filePath = path->c_str();
+        else if (!filePath)
+            filePath = "";
+#endif
+        return setObject(
+            "che.audio.game_play_effect",
+            "{\"soundId\":%d,\"filePath\":\"%s\",\"loopCount\":%d, \"pitch\":%lf,\"pan\":%lf,\"gain\":%d, \"send2far\":%d}",
+            soundId, filePath, loopCount, pitch, pan, gain, publish);
+    }
+
+    /**
+     * To stop effect
+     * @param [in] soundId
+     *        The effect's soundId
+     * @return return 0 on success, error code otherwise
+     */
+    int stopEffect(int soundId) {
+        return m_parameter ? m_parameter->setInt(
+            "che.audio.game_stop_effect", soundId) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * To stop all effects
+     * @return return 0 on success, error code otherwise
+     */
+    int stopAllEffects() {
+        return m_parameter ? m_parameter->setBool(
+            "che.audio.game_stop_all_effects", true) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * To preload effect
+     * @param [in] sound Id
+     *        effect sound id
+     * @param [in] filepath
+     *        effect file path
+     * @return return 0 on success or error code otherwise
+     */
+    int preloadEffect(int soundId, char* filePath) {
+        return setObject(
+            "che.audio.game_preload_effect",
+            "{\"soundId\":%d,\"filePath\":\"%s\"}",
+            soundId, filePath);
+    }
+
+    /**
+     * To unload effect
+     * @param [in] soundId
+     *        effect id
+     * @return return 0 on success, error code otherwise
+     */
+    int unloadEffect(int soundId) {
+        return m_parameter ? m_parameter->setInt(
+            "che.audio.game_unload_effect", soundId) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * To pause effect
+     * @param [in] soundId
+     *        effect id
+     * @return return 0 on success, error code otherwise.
+     */
+    int pauseEffect(int soundId) {
+        return m_parameter ? m_parameter->setInt(
+            "che.audio.game_pause_effect", soundId) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * To pause all effects
+     * @return return 0 on success, error code otherwise.
+     */
+    int pauseAllEffects() {
+        return m_parameter ? m_parameter->setBool(
+            "che.audio.game_pause_all_effects", true) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * To resume effect
+     * @param [in] soundId
+     *        effect id
+     * @return return 0 on success, error code otherwise
+     */
+    int resumeEffect(int soundId) {
+        return m_parameter ? m_parameter->setInt(
+            "che.audio.game_resume_effect", soundId) : -ERR_NOT_INITIALIZED;
+    }
+
+    /**
+     * To resume all effects
+     * @return return 0 on success, error code otherwise.
+     */
+    int resumeAllEffects() {
+        return m_parameter ? m_parameter->setBool(
+            "che.audio.game_resume_all_effects", true) : -ERR_NOT_INITIALIZED;
+    }
+
     /**
      * Change the pitch of local speaker's voice
      * @param [in] pitch
