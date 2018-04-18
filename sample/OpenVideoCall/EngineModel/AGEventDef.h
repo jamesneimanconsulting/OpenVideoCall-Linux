@@ -1,5 +1,72 @@
 #pragma once
 #include<cstdint>
+#include<string>
+#include"IAgoraRtcEngine.h"
+
+using namespace agora::rtc;
+
+typedef struct eventWrapper {
+    uint32_t id;
+    void* data;
+} eventWrapper;
+
+typedef struct joinChannelSuccessData {
+    std::string channel;
+    uint32_t uid;
+    int elapsed;
+} joinChannelSuccessData;
+
+typedef struct rejoinChannelSuccessData {
+    std::string channel;
+    uint32_t uid;
+    int elapsed;
+} rejoinChannelSuccessData;
+
+typedef struct warningData {
+    std::string msg;
+    int warn;
+} warningData;
+
+typedef struct errorData {
+    std::string msg;
+    int err;
+} errorData;
+
+typedef struct audioQualityData {
+    uint32_t uid;
+    int quality;
+    unsigned short delay;
+    unsigned short lost;
+} audioQualityData;
+
+typedef struct leaveChannelData {
+    RtcStats stat;
+} leaveChannelData;
+
+typedef struct userJoinedData {
+    uint32_t uid;
+    int elapsed;
+} userJoinedData;
+
+typedef struct userOfflineData {
+    uint32_t uid;
+    USER_OFFLINE_REASON_TYPE reason;
+} userOfflineData;
+
+typedef struct userMuteAudioData {
+    uint32_t uid;
+    bool muted;
+} userMuteAudioData;
+
+typedef struct userMuteVideoData {
+    uint32_t uid;
+    bool muted;
+} userMuteVideoData;
+
+typedef struct userEnableVideoData {
+    uint32_t uid;
+    bool enabled;
+} userEnableVideoData;
 
 #define EID_JOINCHANNEL_SUCCESS			    0x00000001
 #define EID_REJOINCHANNEL_SUCCESS		    0x00000002

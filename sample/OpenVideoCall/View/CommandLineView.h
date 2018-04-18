@@ -15,6 +15,7 @@ class CommandLineView : public MsgHandler{
         void configure(const AppConfig& config);
 
     private:
+
         bool onCommand(const string& cmd, stringstream& params);
 
         bool open(); 
@@ -34,4 +35,10 @@ class CommandLineView : public MsgHandler{
         bool setCurCamera(const string& cameraId); 
 
         bool exit(); 
+
+        bool onRtcEventMsg(void* msg);
+
+   private:
+        bool m_printCallback;
+
 };

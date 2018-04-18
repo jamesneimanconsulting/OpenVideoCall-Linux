@@ -2,6 +2,7 @@
 #include"AGEngine.h"
 #include"AGCameraManager.h"
 #include"AGEventDef.h"
+#include"Controller/EngineController.h"
 
 #include<iostream>
 #include<string>
@@ -194,6 +195,14 @@ void AGEngineModel::onEvent(int id, void* pData) {
         case EID_JOINCHANNEL_SUCCESS: 
             m_cameraMgr->create(m_engine->getRtcEngine());
             break;
+        default:
+            break;
     }
+    eventWrapper wrapper;
+    wrapper.id = id;
+    wrapper.data = pData;
+    
+    if(m_controller)
+        m_controller->sendMsg(this, MSG_RTC_EVENT, (void*)&wrapper);
 }
 

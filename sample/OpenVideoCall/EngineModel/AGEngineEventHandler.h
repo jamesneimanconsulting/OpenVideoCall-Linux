@@ -21,7 +21,6 @@ class AGEngineEventHandler :
         virtual void onAudioQuality(uid_t uid, int quality, unsigned short delay, unsigned short lost);
         virtual void onLeaveChannel(const RtcStats& stat);
         virtual void onRtcStats(const RtcStats& stat);
-        virtual void onAudioDeviceStateChanged(const char* deviceId, int deviceType, int deviceState);
         virtual void onUserJoined(uid_t uid, int elapsed);
         virtual void onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason);
         virtual void onUserMuteAudio(uid_t uid, bool muted);

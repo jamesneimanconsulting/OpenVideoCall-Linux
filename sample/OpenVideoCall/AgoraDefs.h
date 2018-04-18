@@ -37,3 +37,5 @@ typedef struct AppConfig {
 #define MSG_SET_CUR_CAMERA 0x9
 
 #define MSG_EXIT 0xA
+
+#define MSG_RTC_EVENT 0xB
