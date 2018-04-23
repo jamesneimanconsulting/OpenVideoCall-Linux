@@ -52,9 +52,15 @@ bool AGEngine::joinChannel(const char* channelId, int uid, int channelProfie)
         else
             m_agoraEngine->setChannelProfile(CHANNEL_PROFILE_COMMUNICATION);
 
+        m_agoraEngine->setVideoProfile(VIDEO_PROFILE_LANDSCAPE_360P, true);
+        
         ret = m_agoraEngine->joinChannel(NULL, channelId, NULL, uid);
         if(ret == 0) {
             AParameter msp(*m_agoraEngine);
+            
+            msp->setBool("che.video.customRotation", true);
+            msp->setInt("che.video.capture.rotate", 90);
+
             msp->setInt("che.video.local.camera_index", 0);
         }
     }
