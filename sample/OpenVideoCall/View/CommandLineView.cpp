@@ -37,7 +37,12 @@ void CommandLineView::run(bool openVideoCall) {
     memset(buf, 0, MAXLINE);
 
     cout<< "input command:" << endl;
-    while(fgets(buf, MAXLINE, stdin) != NULL) {
+    while(1) {
+        if(fgets(buf, MAXLINE, stdin) == NULL){
+            exit();
+            break;
+        }
+            
         buf[strlen(buf)-1] = 0;
 
         stringstream ss(&buf[0]);
