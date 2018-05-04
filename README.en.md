@@ -47,8 +47,10 @@ openVideoCall is a commandline demo. Commands as follows:
   enable/disable audio, 'enable_audio 0' means disable audio, 'enable_audio 1' means enable audio
 - enable_local_video
   enable/disable local video, 'enable_local_video 0' means disable local video(local camera), 'enable_local_video 1' means enable local video
-- enable_local_audio
-  enable/disable local audio, 'enable_local_audio 0' means disable local audio(local audio device), 'enable_local_audio 1' means enable local audio
+- mute_local_video
+  mute/unmute local video, 'mute_local_video 0' means unmute local video(local camera), 'mute_local_video 1' means mute local video
+- mute_local_audio
+  mute/unmute local audio, 'mute_local_audio 0' means unmute local audio(local audio device), 'mute_local_audio 1' means mute local audio
 - print_device_info
   print video and audio device info
 - set_cur_camera
