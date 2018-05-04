@@ -30,8 +30,8 @@ First, create a developer account at [Agora.io](https://dashboard.agora.io/signi
 
 Next, download the **Agora Video SDK** from [Agora.io SDK](https://www.agora.io/en/blog/download/).
 Unzip the downloaded SDK package and copy
-- libmediasdk.a
-- libRtcEngine.a
+- libagora_rtc_sdk.so
+
 to the "OpenVideoCall/libs" folder in project（the old one may be over written）.
 
 configue parameters in run.sh.
