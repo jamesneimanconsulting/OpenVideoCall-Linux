@@ -50,6 +50,8 @@ void AGEngineModel::initialize() {
 bool AGEngineModel::onOpenMsg(void* msg) {
     cout << "AgoraRtcEngine:open" <<endl;
 
+    m_engine->setChannelProfile(m_cfg.channelProfile);
+
     m_engine->enableVideo(m_cfg.enableVideo);
 
     m_engine->enableAudio(m_cfg.enableAudio);
@@ -66,7 +68,7 @@ bool AGEngineModel::onOpenMsg(void* msg) {
 
     m_engine->enableWebSdkInteroperability(m_cfg.enableWebSdkInteroperability);
 
-    int ret = m_engine->joinChannel(m_cfg.channelId.c_str(), m_cfg.uid, m_cfg.channelProfile); 
+    int ret = m_engine->joinChannel(m_cfg.channelId.c_str(), m_cfg.uid); 
 
     return ret;
 }

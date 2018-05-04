@@ -23,7 +23,7 @@ class AGEngine
 
         bool setLogFilePath(const char* logPath = NULL);
 
-        bool joinChannel(const char* channelId, int uid, int channelProfie);
+        bool joinChannel(const char* channelId, int uid);
 
         bool leaveChannel();
 
@@ -62,6 +62,8 @@ class AGEngine
         bool sendChatMessage(int streamId, const char* chatMessage);
         
         bool enableWebSdkInteroperability(bool enable);
+
+        bool setChannelProfile(int profile);
 
         bool release();
 

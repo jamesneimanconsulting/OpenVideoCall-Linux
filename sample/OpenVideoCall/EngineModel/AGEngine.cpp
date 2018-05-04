@@ -41,17 +41,10 @@ bool AGEngine::setLogFilePath(const char* logPath)
     return ret == 0 ? true : false;
 }
 
-bool AGEngine::joinChannel(const char* channelId, int uid, int channelProfie)
+bool AGEngine::joinChannel(const char* channelId, int uid)
 {
     int ret = -1;
     if(m_agoraEngine) {
-        if(channelProfie){
-            m_agoraEngine->setChannelProfile(CHANNEL_PROFILE_LIVE_BROADCASTING);
-            m_agoraEngine->setClientRole(CLIENT_ROLE_BROADCASTER);
-        }
-        else
-            m_agoraEngine->setChannelProfile(CHANNEL_PROFILE_COMMUNICATION);
-
         ret = m_agoraEngine->joinChannel(NULL, channelId, NULL, uid);
         if(ret == 0) {
             AParameter msp(*m_agoraEngine);
@@ -61,6 +54,20 @@ bool AGEngine::joinChannel(const char* channelId, int uid, int channelProfie)
 
     return ret == 0 ? true : false;
 }
+
+bool AGEngine::setChannelProfile(int profile) {
+    int ret = -1;
+    if(profile){
+        ret = m_agoraEngine->setChannelProfile(CHANNEL_PROFILE_LIVE_BROADCASTING);
+        if(ret == 0)
+            ret = m_agoraEngine->setClientRole(CLIENT_ROLE_BROADCASTER);
+    }
+    else
+        ret = m_agoraEngine->setChannelProfile(CHANNEL_PROFILE_COMMUNICATION);
+
+    return ret == 0 ? true : false;
+}
+
 
 bool AGEngine::leaveChannel()
 {
