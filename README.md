@@ -28,8 +28,7 @@ Agora视频SDK支持 iOS / Android / Windows / macOS/ Linux 等多个平台，�
 
 然后在 [Agora.io SDK](https://www.agora.io/cn/blog/download/) 下载 **视频通话 + 直播 SDK**，解压后将其中**libs**文件夹下的 
 
-- libmediasdk.a
-- libRtcEngine.a
+- libagora_rtc_sdk.so
 
 两个文件复制到本项目的 “OpenVideoCall/libs” 文件夹下。
 在sample/OpenVideoCall下 输入命令 make， 便可编译生成openVideoCall demo。在run.sh中配置执行demo所需要的参数。
