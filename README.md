@@ -45,8 +45,10 @@ command:
   打开/关闭 全局音频功能
 - enable_local_video
   打开/关闭 本地视频功能，enable_local_video 0 为关闭视频功能，enable_local_video 1为打开视频功能
-- enable_local_audio
-  打开/关闭 本地音频功能，enable_local_audio 0 为关闭视频功能，enable_local_audio 1为打开视频功能
+- mute_local_video
+  打开/关闭 本地视频流发送，mute_local_video 0 为打开视频流发送，mute_local_video 1为关闭本地视频流发送
+- mute_local_audio
+  打开/关闭 本地音频流发送，mute_local_video 0 为打开音频流发送，mute_local_video 1为关闭音频流发送
 - print_device_info
   打印设备信息
 - set_cur_camera
