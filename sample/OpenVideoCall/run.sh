@@ -9,7 +9,8 @@
                  --videoProfile 0 \
                  --enableVideo 1 \
                  --enableAudio 1 \
+                 --muteLocalVideo 0 \
+                 --muteLocalAudio 0 \
                  --enableLocalVideo 1 \
-                 --enableLocalAudio 1 \
                  --enableWebSdkInteroperability 0 \
                  --openVideoCall 0

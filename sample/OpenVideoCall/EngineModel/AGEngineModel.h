@@ -29,8 +29,9 @@ class AGEngineModel : public MsgHandler
         bool onCloseMsg(void* msg);
         bool onEnableVideoMsg(void* msg);
         bool onEnableAudioMsg(void* msg);
+        bool onMuteLocalVideoMsg(void* msg);
+        bool onMuteLocalAudioMsg(void* msg);
         bool onEnableLocalVideoMsg(void* msg);
-        bool onEnableLocalAudioMsg(void* msg);
         bool onConfigureMsg(void* msg);
         bool onPrintDeviceInfoMsg(void* msg);
         bool onSetCurCameraMsg(void* msg); 

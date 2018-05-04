@@ -33,23 +33,17 @@ class AGEngine
 
         bool enableVideo(bool enable = true);
 
+        bool enableLocalVideo(bool enable = true);
+
         bool enableAudio(bool enable = true);
 
         bool setVideoProfile(int videoProfile);
 
         bool setAudioProfile(int audioProfile, int audioScenario);
 
-        bool isVideoEnabled();
-
-        bool isScreenCaptureEnabled();
-
         bool muteLocalAudio(bool mute = true);
 
-        bool isLocalAudioMuted();
-
         bool muteLocalVideo(bool mute = true);
-
-        bool isLocalVideoMuted();
 
         bool enableAudioRecording(bool enable, const char* filePath);
 

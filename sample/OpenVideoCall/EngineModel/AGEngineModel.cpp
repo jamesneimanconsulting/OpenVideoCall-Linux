@@ -26,7 +26,8 @@ AGEngineModel::AGEngineModel() {
     registerHandler(MSG_ENABLE_VIDEO, (handler_ptr)&AGEngineModel::onEnableVideoMsg);
     registerHandler(MSG_ENABLE_AUDIO, (handler_ptr)&AGEngineModel::onEnableAudioMsg);
     registerHandler(MSG_ENABLE_LOCAL_VIDEO, (handler_ptr)&AGEngineModel::onEnableLocalVideoMsg);
-    registerHandler(MSG_ENABLE_LOCAL_AUDIO, (handler_ptr)&AGEngineModel::onEnableLocalAudioMsg);
+    registerHandler(MSG_MUTE_LOCAL_VIDEO, (handler_ptr)&AGEngineModel::onMuteLocalVideoMsg);
+    registerHandler(MSG_MUTE_LOCAL_AUDIO, (handler_ptr)&AGEngineModel::onMuteLocalAudioMsg);
     registerHandler(MSG_PRINT_DEVICE_INFO, (handler_ptr)&AGEngineModel::onPrintDeviceInfoMsg);
     registerHandler(MSG_SET_CUR_CAMERA, (handler_ptr)&AGEngineModel::onSetCurCameraMsg);
     registerHandler(MSG_EXIT, (handler_ptr)&AGEngineModel::onExitMsg);
@@ -53,9 +54,11 @@ bool AGEngineModel::onOpenMsg(void* msg) {
 
     m_engine->enableAudio(m_cfg.enableAudio);
 
-    m_engine->muteLocalVideo(!m_cfg.enableLocalVideo);
+    m_engine->enableLocalVideo(m_cfg.enableLocalVideo);
 
-    m_engine->muteLocalAudio(!m_cfg.enableLocalAudio);
+    m_engine->muteLocalVideo(m_cfg.muteLocalVideo);
+
+    m_engine->muteLocalAudio(m_cfg.muteLocalAudio);
 
     m_engine->setVideoProfile(m_cfg.videoProfile);
 
@@ -89,6 +92,20 @@ bool AGEngineModel::onEnableVideoMsg(void* msg) {
     return true;
 }
 
+bool AGEngineModel::onEnableLocalVideoMsg(void* msg) {
+    bool enable = *(reinterpret_cast<bool*>(msg));
+
+    if(enable != m_cfg.enableLocalVideo) {
+        m_cfg.enableLocalVideo =  enable;
+        m_engine->enableLocalVideo(enable);
+        cout << "AgoraRtcEngine: enable local video: " << enable <<endl;
+    } else {
+        cout << "AgoraRtcEngine: already enabled local video: " << enable <<endl;
+    }
+
+    return true;
+}
+
 bool AGEngineModel::onEnableAudioMsg(void* msg) {
     bool enable = *(reinterpret_cast<bool*>(msg));
 
@@ -103,29 +120,29 @@ bool AGEngineModel::onEnableAudioMsg(void* msg) {
     return true;
 }
 
-bool AGEngineModel::onEnableLocalVideoMsg(void* msg) {
-    bool enable = *(reinterpret_cast<bool*>(msg));
+bool AGEngineModel::onMuteLocalVideoMsg(void* msg) {
+    bool mute = *(reinterpret_cast<bool*>(msg));
 
-    if(enable != m_cfg.enableLocalVideo) {
-        m_cfg.enableLocalVideo =  enable;
-        m_engine->muteLocalVideo(!m_cfg.enableLocalVideo);
-        cout << "AgoraRtcEngine: enable local video: " << enable <<endl;
+    if(mute != m_cfg.muteLocalVideo) {
+        m_cfg.muteLocalVideo =  mute;
+        m_engine->muteLocalVideo(m_cfg.muteLocalVideo);
+        cout << "AgoraRtcEngine: mute local video: " << mute <<endl;
     } else {
-        cout << "AgoraRtcEngine: already enabled local video: " << enable <<endl;
+        cout << "AgoraRtcEngine: already muted local video: " << mute <<endl;
     }
 
     return true;
 }
 
-bool AGEngineModel::onEnableLocalAudioMsg(void* msg) {
-    bool enable = *(reinterpret_cast<bool*>(msg));
+bool AGEngineModel::onMuteLocalAudioMsg(void* msg) {
+    bool mute = *(reinterpret_cast<bool*>(msg));
 
-    if(enable != m_cfg.enableLocalAudio) {
-        m_cfg.enableLocalAudio =  enable;
-        m_engine->muteLocalAudio(!m_cfg.enableLocalAudio);
-        cout << "AgoraRtcEngine: enable local audio: " << enable <<endl;
+    if(mute != m_cfg.muteLocalAudio) {
+        m_cfg.muteLocalAudio =  mute;
+        m_engine->muteLocalAudio(m_cfg.muteLocalAudio);
+        cout << "AgoraRtcEngine: mute local audio: " << mute <<endl;
     } else {
-        cout << "AgoraRtcEngine: already enabled local audio: " << enable <<endl;
+        cout << "AgoraRtcEngine: already muted local audio: " << mute <<endl;
     }
 
     return true;

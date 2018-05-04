@@ -87,6 +87,22 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
         sscanf(enable.c_str(),"%d",&flag);
         return enableAudio((bool)flag);
     }  
+    else if(cmd.compare("mute_local_video") == 0) {
+        string mute;
+        params >> mute;
+
+        int flag = 0;
+        sscanf(mute.c_str(),"%d",&flag);
+        return muteLocalVideo((bool)flag);
+    }
+    else if(cmd.compare("mute_local_audio") == 0) {
+        string mute;
+        params >> mute;
+
+        int flag = 0;
+        sscanf(mute.c_str(),"%d",&flag);
+        return muteLocalAudio((bool)flag);
+    }  
     else if(cmd.compare("enable_local_video") == 0) {
         string enable;
         params >> enable;
@@ -95,14 +111,6 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
         sscanf(enable.c_str(),"%d",&flag);
         return enableLocalVideo((bool)flag);
     }
-    else if(cmd.compare("enable_local_audio") == 0) {
-        string enable;
-        params >> enable;
-
-        int flag = 0;
-        sscanf(enable.c_str(),"%d",&flag);
-        return enableLocalAudio((bool)flag);
-    }  
     else if(cmd.compare("print_device_info") == 0) {
         return printDeviceInfo();
     }  
@@ -156,13 +164,6 @@ bool CommandLineView::enableVideo(bool enable) {
     return m_controller->sendMsg(this, MSG_ENABLE_VIDEO , (void*)&enable);
 }
 
-bool CommandLineView::enableAudio(bool enable) {
-    if(!m_controller)
-        return false;
-
-    return m_controller->sendMsg(this, MSG_ENABLE_AUDIO , (void*)&enable);
-}
-
 bool CommandLineView::enableLocalVideo(bool enable) {
     if(!m_controller)
         return false;
@@ -170,11 +171,25 @@ bool CommandLineView::enableLocalVideo(bool enable) {
     return m_controller->sendMsg(this, MSG_ENABLE_LOCAL_VIDEO , (void*)&enable);
 }
 
-bool CommandLineView::enableLocalAudio(bool enable) {
+bool CommandLineView::enableAudio(bool enable) {
     if(!m_controller)
         return false;
 
-    return m_controller->sendMsg(this, MSG_ENABLE_LOCAL_AUDIO , (void*)&enable);
+    return m_controller->sendMsg(this, MSG_ENABLE_AUDIO , (void*)&enable);
+}
+
+bool CommandLineView::muteLocalVideo(bool mute) {
+    if(!m_controller)
+        return false;
+
+    return m_controller->sendMsg(this, MSG_MUTE_LOCAL_VIDEO , (void*)&mute);
+}
+
+bool CommandLineView::muteLocalAudio(bool mute) {
+    if(!m_controller)
+        return false;
+
+    return m_controller->sendMsg(this, MSG_MUTE_LOCAL_AUDIO , (void*)&mute);
 }
 
 bool CommandLineView::setCurCamera(const string& cameraId) {

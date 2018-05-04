@@ -41,11 +41,14 @@ int main(int argc, char * const argv[]) {
     bool enableAudio = true;
     parser.add_long_opt("enableAudio", &enableAudio, "enable audio/option");
 
+    bool muteLocalVideo = false;
+    parser.add_long_opt("muteLocalVideo", &muteLocalVideo, "mute local video/option");
+
+    bool muteLocalAudio = false;
+    parser.add_long_opt("muteLocalAudio", &muteLocalAudio, "mute local audio/option");
+
     bool enableLocalVideo = true;
     parser.add_long_opt("enableLocalVideo", &enableLocalVideo, "enable local video/option");
-
-    bool enableLocalAudio = true;
-    parser.add_long_opt("enableLocalAudio", &enableLocalAudio, "enable local audio/option");
 
     bool enableWebSdkInteroperability = false;
     parser.add_long_opt("enableWebSdkInteroperability", &enableWebSdkInteroperability, "enable web sdk interoperability/option");
@@ -67,8 +70,9 @@ int main(int argc, char * const argv[]) {
     cfg.videoProfile = videoProfile; 
     cfg.enableVideo = enableVideo; 
     cfg.enableAudio = enableAudio; 
+    cfg.muteLocalVideo = muteLocalVideo; 
+    cfg.muteLocalAudio = muteLocalAudio;
     cfg.enableLocalVideo = enableLocalVideo; 
-    cfg.enableLocalAudio = enableLocalAudio;
     cfg.appId = appId;
     cfg.channelId = channelId;
     cfg.channelProfile = channelProfile; 

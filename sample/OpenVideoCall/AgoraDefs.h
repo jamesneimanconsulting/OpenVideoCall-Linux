@@ -10,8 +10,9 @@ typedef struct AppConfig {
     uint32_t audioScenario;
     bool enableVideo;
     bool enableAudio;
+    bool muteLocalVideo;
+    bool muteLocalAudio;
     bool enableLocalVideo;
-    bool enableLocalAudio;
     bool enableWebSdkInteroperability;
 
     std::string appId;
@@ -28,9 +29,9 @@ typedef struct AppConfig {
 
 #define MSG_ENABLE_AUDIO 0X5
 
-#define MSG_ENABLE_LOCAL_VIDEO 0X6
+#define MSG_MUTE_LOCAL_VIDEO 0X6
 
-#define MSG_ENABLE_LOCAL_AUDIO 0X7
+#define MSG_MUTE_LOCAL_AUDIO 0X7
 
 #define MSG_PRINT_DEVICE_INFO 0x8
 
@@ -39,3 +40,5 @@ typedef struct AppConfig {
 #define MSG_EXIT 0xA
 
 #define MSG_RTC_EVENT 0xB
+
+#define MSG_ENABLE_LOCAL_VIDEO 0XC

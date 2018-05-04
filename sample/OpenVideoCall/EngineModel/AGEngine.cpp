@@ -100,6 +100,15 @@ bool AGEngine::enableVideo(bool enable)
     return ret == 0 ? true : false;
 }
 
+bool AGEngine::enableLocalVideo(bool enable)
+{
+    RtcEngineParameters rep(*m_agoraEngine);
+    int ret = -1;
+    ret = rep.enableLocalVideo(enable);
+
+    return ret == 0 ? true : false;
+}
+
 bool AGEngine::enableAudio(bool enable)
 {
     int ret = -1;

@@ -26,11 +26,13 @@ class CommandLineView : public MsgHandler{
 
         bool enableVideo(bool enable);
 
-        bool enableLocalAudio(bool enable); 
+        bool muteLocalAudio(bool mute); 
 
-        bool enableLocalVideo(bool enable);
+        bool muteLocalVideo(bool mute);
 
         bool printDeviceInfo(); 
+
+        bool enableLocalVideo(bool enable);
 
         bool setCurCamera(const string& cameraId); 
 
