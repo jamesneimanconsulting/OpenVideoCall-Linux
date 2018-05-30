@@ -19,19 +19,26 @@ typedef struct AppConfig {
     std::string channelId;
 }AppConfig;
 
+typedef struct muteRemoteMsg {
+    bool isVideo;
+    bool mute;
+    uint32_t uid;
+}muteRemoteMsg;
+ 
+
 #define MSG_OPEN 0x1
 
 #define MSG_CLOSE 0x2
 
 #define MSG_CONFIGURE 0x3
 
-#define MSG_ENABLE_VIDEO 0X4
+#define MSG_ENABLE_VIDEO 0x4
 
-#define MSG_ENABLE_AUDIO 0X5
+#define MSG_ENABLE_AUDIO 0x5
 
-#define MSG_MUTE_LOCAL_VIDEO 0X6
+#define MSG_MUTE_LOCAL_VIDEO 0x6
 
-#define MSG_MUTE_LOCAL_AUDIO 0X7
+#define MSG_MUTE_LOCAL_AUDIO 0x7
 
 #define MSG_PRINT_DEVICE_INFO 0x8
 
@@ -41,4 +48,6 @@ typedef struct AppConfig {
 
 #define MSG_RTC_EVENT 0xB
 
-#define MSG_ENABLE_LOCAL_VIDEO 0XC
+#define MSG_ENABLE_LOCAL_VIDEO 0xC
+
+#define MSG_MUTE_REMOTE 0xD

@@ -45,6 +45,10 @@ class AGEngine
 
         bool muteLocalVideo(bool mute = true);
 
+        bool muteRemoteVideo(int uid, bool mute);
+
+        bool muteRemoteAudio(int uid, bool mute);
+
         bool enableAudioRecording(bool enable, const char* filePath);
 
         bool enableNetworkTest(bool bEnable);

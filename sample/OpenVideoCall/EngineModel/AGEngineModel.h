@@ -36,6 +36,7 @@ class AGEngineModel : public MsgHandler
         bool onPrintDeviceInfoMsg(void* msg);
         bool onSetCurCameraMsg(void* msg); 
         bool onExitMsg(void* msg); 
+        bool onMuteRemote(void *msg);
 
         void release(); 
     private:

@@ -239,6 +239,22 @@ bool AGEngine::setAudioProfile(int audioProfile, int audioScenario)
     return ret == 0 ? true : false;
 }
 
+bool AGEngine::muteRemoteVideo(int uid, bool mute){
+    RtcEngineParameters rep(*m_agoraEngine);
+
+    int ret = rep.muteRemoteVideoStream(uid, mute);
+
+    return ret == 0 ? true : false;
+}
+
+bool AGEngine::muteRemoteAudio(int uid, bool mute){
+    RtcEngineParameters rep(*m_agoraEngine);
+
+    int ret = rep.muteRemoteAudioStream(uid, mute);
+
+    return ret == 0 ? true : false;
+}
+
 bool AGEngine::release()
 {
     if(m_agoraEngine != NULL) {
