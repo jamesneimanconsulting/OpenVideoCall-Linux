@@ -30,6 +30,10 @@ class CommandLineView : public MsgHandler{
 
         bool muteLocalVideo(bool mute);
 
+        bool muteRemoteAudio(uint32_t uid, bool mute);
+
+        bool muteRemoteVideo(uint32_t uid, bool mute); 
+
         bool printDeviceInfo(); 
 
         bool enableLocalVideo(bool enable);

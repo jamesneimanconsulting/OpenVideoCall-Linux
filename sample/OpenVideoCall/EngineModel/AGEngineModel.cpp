@@ -31,6 +31,7 @@ AGEngineModel::AGEngineModel() {
     registerHandler(MSG_PRINT_DEVICE_INFO, (handler_ptr)&AGEngineModel::onPrintDeviceInfoMsg);
     registerHandler(MSG_SET_CUR_CAMERA, (handler_ptr)&AGEngineModel::onSetCurCameraMsg);
     registerHandler(MSG_EXIT, (handler_ptr)&AGEngineModel::onExitMsg);
+    registerHandler(MSG_MUTE_REMOTE, (handler_ptr)&AGEngineModel::onMuteRemote);
 
     m_engineEventHandler.setEventReceiver(this);
 }
@@ -194,6 +195,14 @@ bool AGEngineModel::onSetCurCameraMsg(void* msg) {
         return false;
 
     return m_cameraMgr->setCurDevice(deviceId->c_str());
+}
+
+bool AGEngineModel::onMuteRemote(void* msg) {
+    muteRemoteMsg* muteMsg = reinterpret_cast<muteRemoteMsg*>(msg);
+    if(muteMsg->isVideo)
+        return m_engine->muteRemoteVideo(muteMsg->uid, muteMsg->mute);
+    else
+        return m_engine->muteRemoteAudio(muteMsg->uid, muteMsg->mute);
 }
 
 void AGEngineModel::release() {

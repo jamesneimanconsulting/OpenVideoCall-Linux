@@ -130,6 +130,34 @@ bool CommandLineView::onCommand(const string& cmd, stringstream& params) {
         m_printCallback = flag;
         return true;
     }
+    else if(cmd.compare("mute_remote_video") == 0) {
+        string uid;
+        params >> uid;
+
+        uint32_t iUid = 0;
+        sscanf(uid.c_str(),"%u",&iUid);
+
+        string mute;
+        int flag = 0;
+        params >> mute;
+        sscanf(mute.c_str(),"%d",&flag);
+
+        return muteRemoteVideo(iUid, flag);
+    }
+    else if(cmd.compare("mute_remote_audio") == 0) {
+        string uid;
+        params >> uid;
+
+        uint32_t iUid = 0;
+        sscanf(uid.c_str(),"%u",&iUid);
+
+        string mute;
+        int flag = 0;
+        params >> mute;
+        sscanf(mute.c_str(),"%d",&flag);
+
+        return muteRemoteAudio(iUid, flag);
+    }
     else {
         cout<< "WARNING:invalid command: " << cmd <<endl;
         return false;
@@ -204,6 +232,30 @@ bool CommandLineView::exit() {
         return false;
 
     return m_controller->sendMsg(this, MSG_EXIT , NULL);
+}
+
+bool CommandLineView::muteRemoteAudio(uint32_t uid, bool mute){
+     if(!m_controller)
+        return false;   
+
+     muteRemoteMsg msg;
+     msg.isVideo = false;
+     msg.mute = mute;
+     msg.uid = uid;
+
+    return m_controller->sendMsg(this, MSG_MUTE_REMOTE ,(void*)&msg);
+}
+
+bool CommandLineView::muteRemoteVideo(uint32_t uid, bool mute){
+     if(!m_controller)
+        return false;   
+
+     muteRemoteMsg msg;
+     msg.isVideo = true;
+     msg.mute = mute;
+     msg.uid = uid;
+
+    return m_controller->sendMsg(this, MSG_MUTE_REMOTE ,(void*)&msg);
 }
 
 bool CommandLineView::onRtcEventMsg(void* msg) {
