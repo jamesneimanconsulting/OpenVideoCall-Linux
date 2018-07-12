@@ -64,7 +64,8 @@ Command|Description|Options
 `enable_audio 0` / `enable_audio 1`|Enable / disable audio|`0` to disable audio. `1` to enable audio.
 `enable_local_video 0` / `enable_local_video 1`|Enable / disable local video|`0` to disable local video (local camera). `1` to enable local video (local camera).
 `mute_local_video 0` / `mute_local_video 1`|Mute / unmute local video| `0` to unmute local video (local camera). `1` to mute local video.
-`mute_local_audio 0` / `mute_local_audio 1`|mute/unmute local audio|`0` to unmute local audio (local audio device). `1` to mute local audio.`print_device_info`|Print video and audio device information|N/A
+`mute_local_audio 0` / `mute_local_audio 1`|mute/unmute local audio|`0` to unmute local audio (local audio device). `1` to mute local audio.
+`print_device_info`|Print video and audio device information|N/A
 `set_cur_camera deviceId`|Sets current camera|`deviceId` is the id of the camera device. You can retrieve the `deviceId` by using `print_device_info`
 `exit`|Exit the app|N/A
 
@@ -1671,7 +1672,7 @@ bool AGEngineModel::onExitMsg(void* msg) {
 
 ## Resources
 - Full API documentation in the [Document Center](https://docs.agora.io/en/)
-- File bugs about this sample [here](https://github.com/AgoraIO/OpenVideoCall-Windows/issues)
+- File bugs about this sample [here](https://github.com/AgoraIO/OpenVideoCall-Linux/issues)
 - Detailed Agora Linux Recording guides [here](https://docs.agora.io/en/2.3.1/addons/Recording/Quickstart%20Guide/recording_cpp?platform=C%2B%2B)
 
 
