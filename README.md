@@ -50,6 +50,7 @@ This section shows you how to prepare and build the sample application.
 ### Build and Run the Sample Application 
 
 Use the `make` command to build the sample application.
+
 Type `./run.sh` to run the demo.
 
 The sample is a command line application. Below are a list of available commands:
