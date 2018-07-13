@@ -65,7 +65,7 @@ Command|Description|Options
 `mute_local_video 0` / `mute_local_video 1`|Mute or unmute local video| `0` to unmute local video (local camera). `1` to mute local video.
 `mute_local_audio 0` / `mute_local_audio 1`|Mute or unmute local audio|`0` to unmute local audio (local audio device). `1` to mute local audio.
 `print_device_info`|Print video and audio device information|N/A
-`set_cur_camera deviceId`|Sets current camera|`deviceId` is the id of the camera device. You can retrieve the `deviceId` by using `print_device_info`
+`set_cur_camera deviceId`|Sets current camera|`deviceId` is the id of the camera device. You can retrieve the `deviceId` by using `print_device_info`.
 `exit`|Exit the app|N/A
 
 
@@ -1573,10 +1573,10 @@ Display the following messages using `cout <<`.
 
 Key message|Description
 ---|---
-`model onPrintDeviceInfoMsg`|Text communicating device information is about to be displayed
-`cameraCnt`|Number of camera devices
-`camera device list:`|Text communicating a list of devices is about to be displayed
-`deviceName` and `deviceId`|Iteration through each device, displaying the device name and device ID.
+`model onPrintDeviceInfoMsg`|Text communicating device information is about to be displayed.
+`cameraCnt`|Number of camera devices.
+`camera device list:`|Text communicating a list of devices is about to be displayed.
+`deviceName` and `deviceId`|Used when iterating through each device to display the device name and device ID.
 
 Retrieve the current camera device ID using `m_cameraMgr->getCurDeviceId()` and print `curDeviceId` to the terminal using `cout <<`.
 
