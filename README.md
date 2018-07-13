@@ -4,11 +4,11 @@ This sample application enables you to quickly get started using the Agora Video
 
 With this sample app, you can:
 
-- Join / leave channel
-- Mute / unmute audio
-- Enable / disable video
-- Change camera
-- Setup resolution, frame rate, and bit rate
+- Join or leave a channel
+- Mute or unmute audio
+- Enable or disable video
+- Change the camera
+- Set up the resolution, frame rate, and bit rate
 
 
 ## Prerequisites
@@ -30,12 +30,11 @@ This section shows you how to prepare and build the sample application.
 
 
 ### Create an Account and Obtain an App ID
-To build and run the sample application, first obtain an App ID: 
 
-1. Create a developer account at [agora.io](https://dashboard.agora.io/signin/). Once you finish the signup process, you are redirected to the dashboard.
-2. In the dashboard tree on the left, navigate to **Projects** > **Project List**.
+1. Sign up for a developer account at [agora.io](https://dashboard.agora.io/signin/).
+2. Upon logging in, use the dashboard tree on the left to navigate to **Projects** > **Project List**.
 3. Save the App ID from the Agora dashboard. The App ID is needed to run the sample application.
-4.  Open *sample/OpenVideoCall/run.sh* file and add the App ID from the Agora dashboard.
+4. Open *sample/OpenVideoCall/run.sh* file and add the App ID from the Agora dashboard.
 
 ```
 ./openVideoCall  --appId "YOUR-APP-ID" \
@@ -44,15 +43,13 @@ To build and run the sample application, first obtain an App ID:
 
 ### Integrate the Agora Video SDK
 
-To open and build the sample application, first integrate the Agora SDK. 
-
 1. Download the [Agora SDK](https://www.agora.io/en/download/).
 2. Unzip the downloaded SDK package.
 3. Copy the `libagora_rtc_sdk.so` file from the downloaded SDK package to the `libs` folder of the sample application.
 
 ### Build and Run the Sample Application 
 
-Use the `make` command to build the sample application. Using ./run.sh to run demo
+Use the `make` command to build the sample application. Using `./run.sh` to run demo
 
 The sample is a command line application. Below are a list of available commands:
 
@@ -60,11 +57,11 @@ Command|Description|Options
 ---|---|---
 `open`|Open a video call|N/A
 `close`|Close the video call|N/A
-`enable_video 0` / `enable_video 1`|Enable / disable video|`0` to disable video. `1` to enable video.
-`enable_audio 0` / `enable_audio 1`|Enable / disable audio|`0` to disable audio. `1` to enable audio.
-`enable_local_video 0` / `enable_local_video 1`|Enable / disable local video|`0` to disable local video (local camera). `1` to enable local video (local camera).
-`mute_local_video 0` / `mute_local_video 1`|Mute / unmute local video| `0` to unmute local video (local camera). `1` to mute local video.
-`mute_local_audio 0` / `mute_local_audio 1`|mute/unmute local audio|`0` to unmute local audio (local audio device). `1` to mute local audio.
+`enable_video 0` / `enable_video 1`|Enable or disable video|`0` to disable video. `1` to enable video.
+`enable_audio 0` / `enable_audio 1`|Enable or disable audio|`0` to disable audio. `1` to enable audio.
+`enable_local_video 0` / `enable_local_video 1`|Enable or disable local video|`0` to disable local video (local camera). `1` to enable local video (local camera).
+`mute_local_video 0` / `mute_local_video 1`|Mute or unmute local video| `0` to unmute local video (local camera). `1` to mute local video.
+`mute_local_audio 0` / `mute_local_audio 1`|Mute or unmute local audio|`0` to unmute local audio (local audio device). `1` to mute local audio.
 `print_device_info`|Print video and audio device information|N/A
 `set_cur_camera deviceId`|Sets current camera|`deviceId` is the id of the camera device. You can retrieve the `deviceId` by using `print_device_info`
 `exit`|Exit the app|N/A
@@ -97,7 +94,7 @@ The AGCameraManager class manages the camera devices.
 
 The `create()` method initializes the class from the Agora `IRtcEngine` object.
 
-1. Begin by creating a `AVideoDeviceManager` object.
+1. Create an `AVideoDeviceManager` object.
 2. If `m_deviceManager` is valid, retrieve the list of device objects using `(*m_deviceManager)->enumerateVideoDevices()`.
 3. If `m_collection` is `NULL`, delete `m_deviceManager` and set it to `NULL`.
 4. Complete the method by returning `true` if `m_collection` is not `NULL` and `false` if it is.
@@ -183,7 +180,7 @@ The `getDevice()` method retrieves the device at the location `index`.
 1. Initialize `name` and `Id`.
 2. Ensure `index` is less than the number of devices and `m_collection` is not `NULL` or return `false`.
 3. Retrieve the device for the specified `index` using `m_collection->getDevice()`.
-4. Ensure the device is successfully retrieved by checking if `ret` is equal to `0`, otherwise return `false`.
+4. Ensure the device is successfully retrieved by checking if `ret` equals `0`. Otherwise, return `false`.
 5. Set `deviceName` to `name` and `deviceId` to `Id` using `assign()` and return `true`.
 
 ``` C++
@@ -214,7 +211,7 @@ The `setCurDevice()` method sets the current device of the application to `devic
 
 1. Ensure `m_deviceManager` is not `NULL` or return `false`.
 2. Set the current device using `(*m_deviceManager)->setDevice()`.
-3. Ensure the device is successfully set by checking if `ret` is equal to `0` and return `true`, otherwise return `false`.
+3. Ensure the device is set by checking if `ret` equals `0` and return `true`. Otherwise, return `false`.
 
 ``` C++
 bool AGCameraManager::setCurDevice(const char* deviceId)
@@ -244,8 +241,6 @@ The `AGEngine` class handles interaction with the Agora SDK.
 - [Add the release() Method](#add-the-release-method)
 
 #### Initialize the AGEngine Class
-
-Initialize `AGEngine` using these steps:
 
 1. Create the engine object using `createAgoraRtcEngine()`.
 2. Initialize a `RtcEngineContext` object and set the event handler using `ctx.eventHandler` and the App ID using `ctx.appId`.
@@ -322,13 +317,13 @@ const char* AGEngine::getCallID()
 
 ##### Add the enableWebSdkInteroperability() Method
 
-The `enableWebSdkInteroperability()` method enables / disables the ability to interact with the Agora Web SDK.
+The `enableWebSdkInteroperability()` method enables or disables the ability to interact with the Agora Web SDK.
 
 Create a new `RtcEngineParameters` object and initialize `ret` with a value of `1`.
 
-Enable / disable the Web SDK by passing `enable` into the method `rep.enableWebSdkInteroperability()`
+Enable or disable the Web SDK by passing `enable` into the method `rep.enableWebSdkInteroperability()`.
 
-If the enable / disable Web SDK is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the enable or disable Web SDK is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::enableWebSdkInteroperability(bool enable)
@@ -355,7 +350,7 @@ default|`aes-128-xts`|AES 128 encryption
 
 Set the encryption key using `m_agoraEngine->setEncryptionSecret`.
 
-If the encryption key and type are successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the encryption key and type are set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::setEncryptionSecret(const char* key, int encryptType)
@@ -402,7 +397,7 @@ The `setLogFilePath()` method sets the file path for saving logs.
 1. Initialize a `RtcEngineParameters` object with `m_agoraEngine`.
 2. Create a `fileName` string by appending `AgoraSdk.log` to `logPath`.
 3. Set the log path for the engine using `rep.setLogFile()`.
-4. Ensure the log path is successfully set by checking if `ret` is equal to `0` and return `true`, otherwise return `false`.
+4. Ensure the log path is set by checking if `ret` equals `0`, and return `true`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::setLogFilePath(const char* logPath)
@@ -426,7 +421,7 @@ Invoke `rep->setLogFilter()` with the `type` parameter to set the log filter typ
 
 Invoke `rep->setLogFile()` with the `logPath` parameter to set the log file path.
 
-If the log filter type and file path are successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the log filter type and file path are set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::setLogFilter(int type, const char* logPath)
@@ -455,9 +450,9 @@ Initialize a variable `ret` with a value of `1`.
 If `m_agoraEngine` is valid:
 
 1. Join the channel using `m_agoraEngine->joinChannel()`.
-2. Ensure the the channel is successfully joined by checking if `ret` is equal to `0` and initialize an `AParameter` object.
+2. Ensure the channel is successfully joined by checking if `ret` equals `0` and initialize an `AParameter` object.
 3. Set the local camera to `che.video.local.camera_index` at index `0` using `msp->setInt()`.
-4. If the channel is successfully joined, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+4. If the channel is successfully joined, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::joinChannel(const char* channelId, int uid)
@@ -484,11 +479,11 @@ Initialize `ret` with a value of `1`.
 If the `profile` is valid:
 
 1. Set the channel profile to `CHANNEL_PROFILE_LIVE_BROADCASTING` using `m_agoraEngine->setChannelProfile()`. This enables live broadcasting for the channel.
-2. Ensure the channel `profile` is successfully set by checking if `ret` is equal to `0`, and set the client role to `CLIENT_ROLE_BROADCASTER`using `m_agoraEngine->setClientRole()`. This enables the user to act as a broadcaster for the channel.
+2. Ensure the channel `profile` is set by checking if `ret` equals `0`, and set the client role to `CLIENT_ROLE_BROADCASTER`using `m_agoraEngine->setClientRole()`. This enables the user to act as a broadcaster for the channel.
 
 If the `profile` is not valid, set the channel profile to `CHANNEL_PROFILE_COMMUNICATION` using `m_agoraEngine->setChannelProfile()`. This enables general communication for the channel.
 
-If the channel profile is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the channel profile is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::setChannelProfile(int profile) {
@@ -512,7 +507,7 @@ The `leaveChannel()` method enables the ability to leave a channel.
 
 Invoke the Agora SDK method `m_agoraEngine->leaveChannel()`.
 
-If the channel is left successfully, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the channel is left successfully, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::leaveChannel()
@@ -530,14 +525,14 @@ The video methods manage video settings for the sample application.
 
 ##### Add the enableVideo() Method
 
-The `enableVideo()` method enables / disables video.
+The `enableVideo()` method enables or disables video.
 
 Initialize `ret` with a value of `-1`.
 
-* If enabling video, invoke `m_agoraEngine->enableVideo()`
-* If disabling video, invoke `m_agoraEngine->disableVideo()`
+* If enabling video, invoke `m_agoraEngine->enableVideo()`.
+* If disabling video, invoke `m_agoraEngine->disableVideo()`.
 
-If the enable / disable video is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the enable or disable video is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::enableVideo(bool enable)
@@ -555,13 +550,13 @@ bool AGEngine::enableVideo(bool enable)
 
 ##### Add the enableLocalVideo() Method
 
-The `enableLocalVideo()` method enables / disables local video.
+The `enableLocalVideo()` method enables or disables local video.
 
 Create a new `RtcEngineParameters` object with `m_agoraEngine` and initialize `ret` with a value of `-1`.
 
-Invoke `rep->enableLocalVideo()` with the `enable` parameter to enable / disable local video.
+Invoke `rep->enableLocalVideo()` with the `enable` parameter to enable or disable local video.
 
-If the enable / disable local video is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the enable or disable local video is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::enableLocalVideo(bool enable)
@@ -576,13 +571,13 @@ bool AGEngine::enableLocalVideo(bool enable)
 
 ##### Add the muteLocalVideo() Method
 
-The `muteLocalVideo()` method turns on / off video.
+The `muteLocalVideo()` method turns the local video on or off.
 
 Create a new `RtcEngineParameters` object with `m_agoraEngine` and initialize `ret` with a value of `-1`.
 
-Invoke `rep->muteLocalVideoStream()` with the `mute` parameter to turn on / off video.
+Invoke `rep->muteLocalVideoStream()` with the `mute` parameter to turn the local video on or off.
 
-If the turn on / off video is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If turn local video on or off is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::muteLocalVideo(bool mute)
@@ -597,11 +592,11 @@ bool AGEngine::muteLocalVideo(bool mute)
 
 ##### Add the muteRemoteVideo() Method
 
-The `muteRemoteVideo()` method turns on/off the remote video for the user specified by `uid`.
+The `muteRemoteVideo()` method turns on or off the remote video for the user specified by `uid`.
 
-Create a new `RtcEngineParameters` object for the engine `m_agoraEngine` and start/stop the remote video by passing `uid` and `mute` into the `rep.muteRemoteVideoStream()` method.
+Create a new `RtcEngineParameters` object for the engine `m_agoraEngine` and start or stop the remote video by passing `uid` and `mute` into the `rep.muteRemoteVideoStream()` method.
 
-If starting/stopping the remove video is successful, return `true`, otherwise return `false`.
+If starting or stopping the remote video is successful, return `true`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::muteRemoteVideo(int uid, bool mute){
@@ -617,7 +612,7 @@ bool AGEngine::muteRemoteVideo(int uid, bool mute){
 
 The `setVideoProfile()` method sets the video profile for the engine by invoking `m_agoraEngine->setVideoProfile()` with the parameter `videoProfile`.
 
-If setting the video profile is successful, return `true`, otherwise return `false`.
+If setting the video profile is successful, return `true`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::setVideoProfile(int videoProfile)
@@ -635,14 +630,14 @@ The audio methods manage video settings for the sample application.
 
 ##### Add the enableAudio() Method
 
-The `enableAudio()` method enables / disables audio.
+The `enableAudio()` method enables or disables audio.
 
 Initialize `ret` with a value of `-1`.
 
-* If enabling audio, invoke `m_agoraEngine->enableAudio()`
-* If disabling audio, invoke `m_agoraEngine->disableAudio()`
+* If enabling audio, invoke `m_agoraEngine->enableAudio()`.
+* If disabling audio, invoke `m_agoraEngine->disableAudio()`.
 
-If the enable / disable audio is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If enable or disable audio is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::enableAudio(bool enable)
@@ -660,13 +655,13 @@ bool AGEngine::enableAudio(bool enable)
 
 ##### Add the muteLocalAudio() Method
 
-The `muteLocalAudio()` method mutes / unmutes audio.
+The `muteLocalAudio()` method mutes or unmutes audio.
 
 Create a new `RtcEngineParameters` object with `m_agoraEngine` and initialize `ret` with a value of `-1`.
 
-Invoke `rep->muteLocalAudioStream()` with the `mute` parameter to mute / unmute audio.
+Invoke `rep->muteLocalAudioStream()` with the `mute` parameter to mute or unmute audio.
 
-If the mute / unmute audio is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If mute or unmute audio is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::muteLocalAudio(bool mute)
@@ -681,11 +676,11 @@ bool AGEngine::muteLocalAudio(bool mute)
 
 ##### Add the muteRemoteAudio() Method
 
-The `muteRemoteAudio()` method mutes/unmutes the remote audio for the user specified by `uid`.
+The `muteRemoteAudio()` method mutes or unmutes the remote audio for the user specified by `uid`.
 
-Create a new `RtcEngineParameters` object for the engine `m_agoraEngine` and mute/unmute the remote audio by passing `uid` and `mute` into the `rep.muteRemoteAudioStream()` method.
+Create a new `RtcEngineParameters` object for the engine `m_agoraEngine` and mute or unmute the remote audio by passing `uid` and `mute` into the `rep.muteRemoteAudioStream()` method.
 
-If starting/stopping the remove video is successful, return `true`, otherwise return `false`.
+If starting or stopping the remote audio is successful, return `true`. Otherwise, return `false`.
 
 
 ``` C++
@@ -702,7 +697,7 @@ bool AGEngine::muteRemoteAudio(int uid, bool mute){
 
 The `setAudioProfile()` method sets the audio profile for the engine by invoking `m_agoraEngine-> setAudioProfile()` with the parameters `audioProfile` and `audioScenario`.
 
-If setting the audio profile is successful, return `true`, otherwise return `false`.
+If setting the audio profile is successful, return `true`. Otherwise, return `false`.
 
 
 ``` C++
@@ -720,14 +715,14 @@ The testing methods enable and disable Agora SDK tests.
 
 ##### Add the enableNetworkTest() Method
 
-The `enableNetworkTest()` method enables / disables the last mile network test.
+The `enableNetworkTest()` method enables or disables the last mile network test.
 
 Initialize `ret` with a value of `-1`.
 
-* If enabling the last mile test, invoke `m_agoraEngine->enableLastmileTest()`
-* If disabling the last mile test, invoke `m_agoraEngine->disableLastmileTest()`
+* If enabling the last mile test, invoke `m_agoraEngine->enableLastmileTest()`.
+* If disabling the last mile test, invoke `m_agoraEngine->disableLastmileTest()`.
 
-If the enable / disable last mile test is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the enable or disable last mile test is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::enableNetworkTest(bool enable)
@@ -745,14 +740,14 @@ bool AGEngine::enableNetworkTest(bool enable)
 
 ##### Add the enableEchoTest() Method
 
-The `enableEchoTest()` method enables / disables the echo test.
+The `enableEchoTest()` method enables or disables the echo test.
 
 Initialize `ret` with a value of `-1`.
 
-* If enabling the echo test, invoke `m_agoraEngine->startEchoTest()`
-* If disabling the echo test, invoke `m_agoraEngine->stopEchoTest()`
+* If enabling the echo test, invoke `m_agoraEngine->startEchoTest()`.
+* If disabling the echo test, invoke `m_agoraEngine->stopEchoTest()`.
 
-If the enable / disable last mile test is successfully set, return `true` by checking if `ret` is equal to `0`, otherwise return `false`.
+If the enable or disable last mile test is set, return `true` by checking if `ret` equals `0`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::enableEchoTest(bool enable)
@@ -796,7 +791,7 @@ The `sendChatMessage()` method sends a message specified by `chatMessage` to the
 
 Initialize `messageLen` with the size of `chatMessage` and invoke the `m_agoraEngine->sendStreamMessage()` with the parameters `streamId`, `chatMessage`, and `messageLen` method to send the message to the stream. 
 
-If the message send is successful, return `true`, otherwise return `false`.
+If the message send is successful, return `true`. Otherwise, return `false`.
 
 ``` C++
 bool AGEngine::sendChatMessage(int streamId, const char* chatMessage)
@@ -815,7 +810,7 @@ The `release()` method releases the Agora engine from memory for garbage collect
 
 If `m_agoraEngine` is not `NULL` invoke `m_agoraEngine->release()` and set its value to `NULL`.
 
-If `m_parameters` exists clear the variable using `delete` and set its value to `NULL`.
+If `m_parameters` exists, clear the variable using `delete` and set its value to `NULL`.
 
 ``` C++
 bool AGEngine::release()
@@ -882,10 +877,10 @@ The `onJoinChannelSuccess()` callback triggers when a user of `uid` successfully
 
 Ensure `m_receiver` is not `NULL` before submitting the join success data:
 
-1. Declare a new `joinChannelSuccessData` object
-2. Set `data.channel` to the value `std::string(channel)`
-3. Set `data.elapsed` to the value `elapsed`
-4. Set `data.uid` to the value `uid`
+1. Declare a new `joinChannelSuccessData` object.
+2. Set `data.channel` to the value `std::string(channel)`.
+3. Set `data.elapsed` to the value `elapsed`.
+4. Set `data.uid` to the value `uid`.
 5. Trigger the `EID_JOINCHANNEL_SUCCESS` event for the receiver with the user, channel, and time elapsed data using `m_receiver->onEvent()`.
 
 ``` C++
@@ -907,10 +902,10 @@ The `onRejoinChannelSuccess()` callback triggers when a user of `uid` successful
 
 Ensure `m_receiver` is not `NULL` before submitting the re-join success data:
 
-1. Declare a new `rejoinChannelSuccessData ` object
-2. Set `data.channel` to the value `std::string(channel)`
-3. Set `data.elapsed` to the value `elapsed`
-4. Set `data.uid` to the value `uid`
+1. Declare a new `rejoinChannelSuccessData ` object.
+2. Set `data.channel` to the value `std::string(channel)`.
+3. Set `data.elapsed` to the value `elapsed`.
+4. Set `data.uid` to the value `uid`.
 5. Trigger the `EID_REJOINCHANNEL_SUCCESS` event for the receiver with the user, channel, and time elapsed data using `m_receiver->onEvent()`.
 
 ``` C++
@@ -932,9 +927,9 @@ The `onLeaveChannel()` callback triggers when the channel is left.
 
 Ensure `m_receiver` is not `NULL` before submitting the leave channel data:
 
-1. Declare a new `leaveChannelData` object
-2. Set `data.stat` to the value `stat`
-3. Trigger the `EID_LEAVE_CHANNEL` event for the receiver with the statistic information using `m_receiver->onEvent()`
+1. Declare a new `leaveChannelData` object.
+2. Set `data.stat` to the value `stat`.
+3. Trigger the `EID_LEAVE_CHANNEL` event for the receiver with the statistic information using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onLeaveChannel(const RtcStats& stat)
@@ -957,10 +952,10 @@ The `onWarning()` callback triggers when a warning occurs from the Agora engine.
 
 Ensure `m_receiver` is not `NULL` before submitting the warning data:
 
-1. Declare a new `warningData` object
-2. Set `data.msg` to the value `std::string(msg)` if `msg` is not `NULL`, otherwise set `on warning` as the value
-3. Set `data.warn` to the value `warn`
-4. Trigger the `EID_WARNING` event for the receiver with warning message and type using `m_receiver->onEvent()`.
+1. Declare a new `warningData` object.
+2. Set `data.msg` to the value `std::string(msg)` if `msg` is not `NULL`. Otherwise, set `on warning` as the value.
+3. Set `data.warn` to the value `warn`.
+4. Trigger the `EID_WARNING` event for the receiver with the warning message and type using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onWarning(int warn, const char* msg)
@@ -980,10 +975,10 @@ The `onError()` callback triggers when an error occurs from the Agora engine.
 
 Ensure `m_receiver` is not `NULL` before submitting the error data:
 
-1. Declare a new `errorData` object
-2. Set `data.err` to the value `err`
-3. Set `data.msg` to the value `std::string(msg)` if `msg` is not `NULL`, otherwise set `on error` as the value
-4. Trigger the `EID_ERROR ` event for the receiver with error message and type using `m_receiver->onEvent()`
+1. Declare a new `errorData` object.
+2. Set `data.err` to the value `err`.
+3. Set `data.msg` to the value `std::string(msg)` if `msg` is not `NULL`. Otherwise, set `on error` as the value.
+4. Trigger the `EID_ERROR ` event for the receiver with the error message and type using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onError(int err, const char* msg)
@@ -999,7 +994,7 @@ void AGEngineEventHandler::onError(int err, const char* msg)
 
 #### Add User Callbacks
 
-The callback methods in this section are triggered from user actions.
+The callback methods in this section are triggered by user actions.
 
 - [Add the onUserJoined() Callback](#add-the-onuserjoined-callback)
 - [Add the onUserOffline() Callback](#add-the-onuseroffline-callback)
@@ -1013,10 +1008,10 @@ The `onUserJoined()` callback triggers when a user of `uid` joins.
 
 Ensure `m_receiver` is not `NULL` before submitting the join success data:
 
-1. Declare a new `userJoinedData` object
-2. Set `data.uid` to the value `uid`
-3. Set `data.elapsed` to the value `elapsed`
-4. Trigger the `EID_USER_JOINED` event for the receiver with the user and time elapsed data using `m_receiver->onEvent()`
+1. Declare a new `userJoinedData` object.
+2. Set `data.uid` to the value `uid`.
+3. Set `data.elapsed` to the value `elapsed`.
+4. Trigger the `EID_USER_JOINED` event for the receiver with the user and time elapsed data using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onUserJoined(uid_t uid, int elapsed)
@@ -1036,10 +1031,10 @@ The `onUserOffline()` callback triggers when a user of `uid` goes offline.
 
 Ensure `m_receiver` is not `NULL` before submitting the offline user data:
 
-1. Declare a new `userOfflineData` object
-2. Set `data.uid` to the value `uid`
-3. Set `data.reason` to the value `reason`
-4. Trigger the `EID_USER_OFFLINE` event for the receiver with the user and reason data using `m_receiver->onEvent()`
+1. Declare a new `userOfflineData` object.
+2. Set `data.uid` to the value `uid`.
+3. Set `data.reason` to the value `reason`.
+4. Trigger the `EID_USER_OFFLINE` event for the receiver with the user and reason data using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE reason)
@@ -1055,14 +1050,14 @@ void AGEngineEventHandler::onUserOffline(uid_t uid, USER_OFFLINE_REASON_TYPE rea
 
 ##### Add the onUserMuteAudio() Callback
 
-The `onUserMuteAudio()` callback triggers when a user of `uid` mutes / unmutes audio.
+The `onUserMuteAudio()` callback triggers when a user of `uid` mutes or unmutes audio.
 
-Ensure `m_receiver` is not `NULL` before submitting the mute/unmute data:
+Ensure `m_receiver` is not `NULL` before submitting the mute or unmute data:
 
-1. Declare a new `userMuteAudioData` object
-2. Set `data.uid` to the value `uid`
-3. Set `data.muted` to the value `muted`
-4. Trigger the `EID_USER_MUTE_AUDIO` event for the receiver with the user and mute/unmute data using `m_receiver->onEvent()`
+1. Declare a new `userMuteAudioData` object.
+2. Set `data.uid` to the value `uid`.
+3. Set `data.muted` to the value `muted`.
+4. Trigger the `EID_USER_MUTE_AUDIO` event for the receiver with the user and mute or unmute data using `m_receiver->onEvent()`.
 
 
 ``` C++
@@ -1079,14 +1074,14 @@ void AGEngineEventHandler::onUserMuteAudio(uid_t uid, bool muted)
 
 ##### Add the onUserMuteVideo() Callback
 
-The `onUserMuteVideo()` callback triggers when a user of `uid` turns on/off video.
+The `onUserMuteVideo()` callback triggers when a user of `uid` turns the video on or off.
 
-Ensure `m_receiver` is not `NULL` before submitting the video on/off data:
+Ensure `m_receiver` is not `NULL` before submitting the video on or off data:
 
-1. Declare a new `userMuteVideoData` object
-2. Set `data.uid` to the value `uid`
-3. Set `data.muted` to the value `muted`
-4. Trigger the `EID_USER_MUTE_VIDEO` event for the receiver with the user and mute/unmute data using `m_receiver->onEvent()`.
+1. Declare a new `userMuteVideoData` object.
+2. Set `data.uid` to the value `uid`.
+3. Set `data.muted` to the value `muted`.
+4. Trigger the `EID_USER_MUTE_VIDEO` event for the receiver with the user and mute or unmute data using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onUserMuteVideo(uid_t uid, bool muted)
@@ -1102,14 +1097,14 @@ void AGEngineEventHandler::onUserMuteVideo(uid_t uid, bool muted)
 
 ##### Add the onUserEnableVideo() Callback
 
-The `onUserEnableVideo()` callback triggers when a user of `uid` enables / disables video.
+The `onUserEnableVideo()` callback triggers when a user of `uid` enables or disables video.
 
-Ensure `m_receiver` is not `NULL` before submitting the enable/disable video data:
+Ensure `m_receiver` is not `NULL` before submitting the enable or disable video data:
 
-1. Declare a new `userEnableVideoData` object
-2. Set `data.uid` to the value `uid`
-3. Set `data.enabled` to the value `enabled`
-4. Trigger the `EID_USER_ENABLE_VIDEO` event for the receiver with the user and enable/disable data using `m_receiver->onEvent()`.
+1. Declare a new `userEnableVideoData` object.
+2. Set `data.uid` to the value `uid`.
+3. Set `data.enabled` to the value `enabled`.
+4. Trigger the `EID_USER_ENABLE_VIDEO` event for the receiver with the user and enable or disable data using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onUserEnableVideo(uid_t uid, bool enabled)
@@ -1158,7 +1153,7 @@ void AGEngineEventHandler::onConnectionInterrupted()
 
 #### Add Statistics and Status Callbacks
 
-The callbacks in this section trigger when statistics are received or status changes in the application are detected.
+The callbacks in this section trigger when statistics are received, or status changes in the application are detected.
 
 ##### Add the onRtcStats() Callback
 
@@ -1180,12 +1175,12 @@ The `onAudioQuality()` callback triggers when the audio `quality` changes for a 
 
 Ensure `m_receiver` is not `NULL` before submitting the audio quality data:
 
-1. Declare a new `audioQualityData` object
-2. Set `data.uid` to the value `uid`
-3. Set `data.quality` to the value `quality`
-4. Set `data.delay` to the value `delay`
-5. Set `data.lost` to the value `lost`
-6. Trigger the `EID_AUDIO_QUALITY` event for the receiver with user, audio quality, delay, and lost information using `m_receiver->onEvent()`
+1. Declare a new `audioQualityData` object.
+2. Set `data.uid` to the value `uid`.
+3. Set `data.quality` to the value `quality`.
+4. Set `data.delay` to the value `delay`.
+5. Set `data.lost` to the value `lost`.
+6. Trigger the `EID_AUDIO_QUALITY` event for the receiver with the user, audio quality, delay, and lost information using `m_receiver->onEvent()`.
 
 ``` C++
 void AGEngineEventHandler::onAudioQuality(uid_t uid, int quality, unsigned short delay, unsigned short lost)
@@ -1248,18 +1243,18 @@ The `AGEngineModel()` method maps event listener constants to their associated c
 
 Event|Callback|Description
 ---|---|---
-`MSG_OPEN`|`onOpenMsg`|Sets the configuration for the Agora engine, and joins the user to the channel
-`MSG_CLOSE`|`onCloseMsg`|Closes the camera manager and leaves the channel
-`MSG_CONFIGURE`|`onConfigureMsg`|Triggers when the engine configurations change
-`MSG_ENABLE_VIDEO`|`onEnableVideoMsg`|Triggers when the video is enabled
-`MSG_ENABLE_AUDIO`|`onEnableAudioMsg`|Triggers when the audio is enabled
-`MSG_ENABLE_LOCAL_VIDEO`|`onEnableLocalVideoMsg`|Triggers when the local video is enabled
-`MSG_MUTE_LOCAL_VIDEO`|`onMuteLocalVideoMsg`|Triggers when the local video is turned off
-`MSG_MUTE_LOCAL_AUDIO`|`onMuteLocalAudioMsg`|Triggers when the local audio is turned off
-`MSG_PRINT_DEVICE_INFO`|`onPrintDeviceInfoMsg`|Triggers when the device information needs to be displayed
-`MSG_SET_CUR_CAMERA`|`onSetCurCameraMsg`|Triggers when the current camera is set
-`MSG_EXIT`|`onExitMsg`|Triggers when the application is exited
-`MSG_MUTE_REMOTE`|`onMuteRemote`|Triggers when the remote video is turned off
+`MSG_OPEN`|`onOpenMsg`|Sets the configuration for the Agora engine and joins the user to the channel.
+`MSG_CLOSE`|`onCloseMsg`|Closes the camera manager and leaves the channel.
+`MSG_CONFIGURE`|`onConfigureMsg`|Triggers when the engine configurations change.
+`MSG_ENABLE_VIDEO`|`onEnableVideoMsg`|Triggers when the video is enabled.
+`MSG_ENABLE_AUDIO`|`onEnableAudioMsg`|Triggers when the audio is enabled.
+`MSG_ENABLE_LOCAL_VIDEO`|`onEnableLocalVideoMsg`|Triggers when the local video is enabled.
+`MSG_MUTE_LOCAL_VIDEO`|`onMuteLocalVideoMsg`|Triggers when the local video is turned off.
+`MSG_MUTE_LOCAL_AUDIO`|`onMuteLocalAudioMsg`|Triggers when the local audio is turned off.
+`MSG_PRINT_DEVICE_INFO`|`onPrintDeviceInfoMsg`|Triggers when the device information needs to be displayed.
+`MSG_SET_CUR_CAMERA`|`onSetCurCameraMsg`|Triggers when the current camera is set.
+`MSG_EXIT`|`onExitMsg`|Triggers when the application is exited.
+`MSG_MUTE_REMOTE`|`onMuteRemote`|Triggers when the remote video is turned off.
 
 ``` C++
 AGEngineModel::AGEngineModel() {
@@ -1303,19 +1298,19 @@ The methods in this section handle joining and leaving a channel and its callbac
 
 ##### Add the onOpenMsg() Method
 
-The `onOpenMsg()` method sets the configuration for the Agora engine, and joins the user to the channel.
+The `onOpenMsg()` method sets the configuration for the Agora engine and joins the user to the channel.
 
 Set the engine configuration settings:
 
-- Set the channel profile with `m_cfg.channelProfile` using `m_engine->setChannelProfile()``
-- Enable/disable video with `m_cfg.enableVideo` using `m_engine->enableVideo()`
-- Enable/disable audio with `m_cfg.enableAudio ` using `m_engine->enableAudio()`
-- Enable/disable local video with `m_cfg.enableLocalVideo ` using `m_engine->enableLocalVideo()`
-- Turn on/off local video with `m_cfg.muteLocalVideo ` using `m_engine->muteLocalVideo()`
-- Mute/unmute local audio with `m_cfg.muteLocalAudio ` using `m_engine->muteLocalAudio()`
+- Set the channel profile with `m_cfg.channelProfile` using `m_engine->setChannelProfile()`
+- Enable or disable video with `m_cfg.enableVideo` using `m_engine->enableVideo()`
+- Enable or disable audio with `m_cfg.enableAudio ` using `m_engine->enableAudio()`
+- Enable or disable local video with `m_cfg.enableLocalVideo ` using `m_engine->enableLocalVideo()`
+- Turn on or off local video with `m_cfg.muteLocalVideo ` using `m_engine->muteLocalVideo()`
+- Mute or unmute local audio with `m_cfg.muteLocalAudio ` using `m_engine->muteLocalAudio()`
 - Set the video profile with `m_cfg.videoProfile ` using `m_engine->setVideoProfile()`
 - Set the audio profile with `m_cfg.audioProfile` and `m_cfg.audioScenario` using `m_engine->setAudioProfile()`
-- Enable/disable interactions with the Agora web SDK with `m_cfg.enableWebSdkInteroperability` using `m_engine->enableWebSdkInteroperability()`
+- Enable or disable interactions with the Agora web SDK with `m_cfg.enableWebSdkInteroperability` using `m_engine->enableWebSdkInteroperability()`
 
 Join the user `m_cfg.uid` to the channel `m_cfg.channelId.c_str()` using `m_engine->joinChannel()`. Return the result `ret`.
 
@@ -1368,7 +1363,7 @@ bool AGEngineModel::onCloseMsg(void* msg) {
 
 The `onEvent()` method triggers when a user joins a channel.
 
-If `id` matches `EID_JOINCHANNEL_SUCCESS`, invoke `m_cameraMgr->create()`
+If `id` matches `EID_JOINCHANNEL_SUCCESS`, invoke `m_cameraMgr->create()`.
 
 Initialize a new `eventWrapper` object and set `wrapper.id` with `id` and `wrapper.data` with `pData`.
 
@@ -1453,8 +1448,8 @@ The `onMuteLocalVideoMsg()` method triggers when the local video is turned off.
 
 Convert `msg` to a boolean object `mute`.
 
-- If `mute` does not match the turn on/off local video configuration `m_cfg.muteLocalVideo`, update the configuration and turn off the local video using `m_engine->muteLocalVideo()` and display the `mute local video` message to the terminal using `cout <<`.
-- If `mute` does match the turn on/off local video configuration `m_cfg.muteLocalVideo`, the local video is already turned off. Display the `already muted local video` message to the terminal using `cout <<`.
+- If `mute` does not match the turn on or off local video configuration `m_cfg.muteLocalVideo`, update the configuration and turn off the local video using `m_engine->muteLocalVideo()` and display the `mute local video` message to the terminal using `cout <<`.
+- If `mute` does match the turn on or off local video configuration `m_cfg.muteLocalVideo`, the local video is already turned off. Display the `already muted local video` message to the terminal using `cout <<`.
 
 ``` C++
 bool AGEngineModel::onMuteLocalVideoMsg(void* msg) {
@@ -1528,8 +1523,8 @@ The `onMuteLocalAudioMsg()` method triggers when the local audio is turned off.
 
 Convert `msg` to a boolean object `mute`.
 
-- If `mute` does not match the turn on/off local audio configuration `m_cfg.muteLocalAudio`, update the configuration and turn off the local audio using `m_engine->muteLocalAudio()` and display the `mute local audio` message to the terminal using `cout <<`.
-- If `mute` does match the turn on/off local audio configuration `m_cfg.muteLocalAudio`, the local audio is already turned off. Display the `already muted local audio` message to the terminal using `cout <<`.
+- If `mute` does not match the turn on or off local audio configuration `m_cfg.muteLocalAudio`, update the configuration and turn off the local audio using `m_engine->muteLocalAudio()` and display the `mute local audio` message to the terminal using `cout <<`.
+- If `mute` does match the turn on or off local audio configuration `m_cfg.muteLocalAudio`, the local audio is already turned off. Display the `already muted local audio` message to the terminal using `cout <<`.
 
 ``` C++
 bool AGEngineModel::onMuteLocalAudioMsg(void* msg) {
@@ -1578,7 +1573,7 @@ Key message|Description
 ---|---
 `model onPrintDeviceInfoMsg`|Text communicating device information is about to be displayed
 `cameraCnt`|Number of camera devices
-`camera device list:`|Text communicating a list of devices are about to be displayed
+`camera device list:`|Text communicating a list of devices is about to be displayed
 `deviceName` and `deviceId`|Iteration through each device, displaying the device name and device ID.
 
 Retrieve the current camera device ID using `m_cameraMgr->getCurDeviceId()` and print `curDeviceId` to the terminal using `cout <<`.
@@ -1629,8 +1624,8 @@ bool AGEngineModel::onSetCurCameraMsg(void* msg) {
 
 The `release()` method releases the camera manager and engine from memory.
 
-- If `m_cameraMgr` exists, remove it using `delete` and set it to `NULL`
-- If `m_engine` exists, remove it using `delete` and set it to `NULL`
+- If `m_cameraMgr` exists, remove it using `delete` and set it to `NULL`.
+- If `m_engine` exists, remove it using `delete` and set it to `NULL`.
 
 ``` C++
 void AGEngineModel::release() {
@@ -1653,9 +1648,9 @@ void AGEngineModel::release() {
 
 The `onExitMsg()` method triggers when the application is exited.
 
-1. Close the channel using `m_cameraMgr->close()`
-2. Leave the channel using `m_engine->leaveChannel()`
-3. Release the engine from memory for garbage collection using `m_engine->release()`
+1. Close the channel using `m_cameraMgr->close()`.
+2. Leave the channel using `m_engine->leaveChannel()`.
+3. Release the engine from memory for garbage collection using `m_engine->release()`.
 4. Release remaining application memory for garbage collection using `release()`.
 
 ``` C++
